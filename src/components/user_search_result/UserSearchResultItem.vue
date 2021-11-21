@@ -2,9 +2,11 @@
   <div>
     <p
       @click="goToProfile"
+      v-if="user.username"
     >
       {{ user.username }}
     </p>
+    <p v-else>검색결과가 없습니다.</p>
   </div>
 </template>
 
@@ -12,9 +14,7 @@
 export default {
   name: 'UserSearchResultItem',
   props: {
-    user: {
-      type: Object
-    }
+    user: Object
   },
   methods: {
     goToProfile: function () {

@@ -1,15 +1,14 @@
 <template>
   <div class="d-flex">
-      <div v-if="movie.poster_path" style="float:left">
-        <img :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`" alt="" style="width:200px">
-      </div>
-      <div v-else style="width:200px; height:300px; float:left">
-        이미지가 없습니다.
-      </div>
-      <div style="float:none">
+      <div style="float:none" data-bs-toggle="modal" :data-bs-target="`#detail-${movie.id}`">
+        <div v-if="movie.poster_path" style="float:left">
+          <img :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`" alt="" style="width:200px">
+        </div>
+        <div v-else style="width:200px; height:300px; float:left">
+          이미지가 없습니다.
+        </div>
         <span>{{ movie.title }}</span>
         <p>{{ movie.overview }}</p>
-        <button data-bs-toggle="modal" :data-bs-target="`#detail-${movie.id}`" @click="getCredit">상세정보</button>
       </div>
       <search-movie-list-item-modal
         :movie="movie"

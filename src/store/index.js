@@ -19,7 +19,6 @@ export default new Vuex.Store({
     },
     SELECT_MOVIE: function(state, movie){
       state.movieData = movie
-      console.log(movie)
     }
   },
   actions: {

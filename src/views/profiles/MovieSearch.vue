@@ -35,7 +35,6 @@ export default {
         url: API_URL
       })
         .then(res =>{
-          console.log(res.data.results)
           this.searchMovieData = res.data.results
         })
         .catch(err => {

@@ -39,7 +39,7 @@ export default {
         oneline_review: null,
         content:null,
         quote: null,
-        watched_at: null,
+        watched_at: "2021-11-26",
         tmdb_movie_id: null,
         thumbnail_path: null,
         movie_title: null,
@@ -48,10 +48,9 @@ export default {
   },
   methods: {
     createReview: function() {
-      console.log(this.sendData)
-      this.sendData.tmdb_movie_id = this.movieData.id
-      this.sendData.thumbnail_path = this.movieData.poster_path
-      this.sendData.movie_title = this.movieData.title
+      this.sendData.tmdb_movie_id = (this.movieData.id || "id")
+      this.sendData.thumbnail_path = (this.movieData.poster_path || "image")
+      this.sendData.movie_title = (this.movieData.title || "title")
       this.$emit('create-review', this.sendData)
     }
   },

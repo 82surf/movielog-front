@@ -4,7 +4,7 @@
     <user-search-result-item
       v-for="user in users"
       :key="user.id"
-      :user=user
+      :user="user"
     >
     </user-search-result-item>
   </div>
@@ -34,7 +34,6 @@ export default {
       return config
     },
     getSearchResults: function () {
-      console.log(this.username)
       axios({
         method: 'get',
         url: `${process.env.VUE_APP_SERVER_URL}/accounts/search/${this.username}/`,

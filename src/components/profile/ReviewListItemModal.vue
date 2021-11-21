@@ -43,7 +43,7 @@
           <div class="modal-footer">
             <p>
               <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapse" aria-expanded="false" aria-controls="collapseExample">
-                댓글보기
+                댓글
               </button>
             </p>
           </div>
@@ -55,8 +55,8 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">{{ review.movie_title }}</h5>
-              <button type="button" class="btn btn-secondary" :data-bs-target="`#Modal${review.pk}`" data-bs-toggle="modal" @click="updateReview">수정완료</button>
-              <button type="button" class="btn btn-danger" :data-bs-target="`#Modal${review.pk}delete`"  data-bs-toggle="modal">일기삭제</button>
+            <button type="button" class="btn btn-secondary" :data-bs-target="`#Modal${review.pk}`" data-bs-toggle="modal" @click="updateReview">수정완료</button>
+            <button type="button" class="btn btn-danger" :data-bs-target="`#Modal${review.pk}delete`"  data-bs-toggle="modal">일기삭제</button>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -70,7 +70,7 @@
               </div>
               <div class="mb-3">
                 <span>관람일:</span>
-                <input type="date" v-model="review.watched_at">
+                <input type="date" v-model="watched_at">
               </div>
               <div class="mb-3">
                 <span>평점: </span>
@@ -101,8 +101,8 @@
         </div>
       </div>
     </div>
-
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">상세정보</button>
+<!-- 
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">상세정보</button> -->
   </div>
 </template>
 
@@ -124,6 +124,7 @@ export default {
     return {
       likes: null,
       commentInput: null,
+      watched_at: this.review.watched_at
     }
   },
   methods: {
@@ -139,9 +140,8 @@ export default {
         rank: this.review.rank,
         oneline_review: this.review.oneline_review,
         content: this.review.content,
-
         quote: this.review.quote,
-        watched_at: this.review.watched_at,
+        watched_at: this.watched_at,
         tmdb_movie_id: this.review.tmdb_movie_id,
         thumbnail_path: this.review.thumbnail_path,
         movie_title: this.review.movie_title
@@ -152,8 +152,8 @@ export default {
         headers: this.setToken(),
         data: updateData
       })
-        .then(res => {
-          console.log(res)
+        .then(() => {
+          this.$emit('delete-review')
         })
         .catch(err => {
           console.log(err)
@@ -165,8 +165,7 @@ export default {
         url: `${process.env.VUE_APP_SERVER_URL}/profiles/review_detail/${this.username}/${this.review.pk}/`,
         headers: this.setToken(),
       })
-        .then(res => {
-          console.log(res)
+        .then(() => {
           this.$emit('delete-review')
         })
         .catch(err => {
@@ -179,8 +178,7 @@ export default {
         url: `${process.env.VUE_APP_SERVER_URL}/profiles/review_detail/${this.paramUsername}/${this.review.pk}/likes/`,
         headers: this.setToken()
       })
-        .then(res => {
-          console.log(res)
+        .then(() => {
           this.likes = !this.likes
           this.$emit('delete-review')
         })
@@ -202,8 +200,7 @@ export default {
         headers: this.setToken(),
         data: sendData,
       })
-        .then(res => {
-          console.log(res)
+        .then(() => {
           this.commentInput = ''
           this.$emit('delete-review')
           
@@ -233,9 +230,13 @@ export default {
   computed: {
     ...mapState([
       'username'
-    ])
+    ]),
   }
 }
+// 뒤로가기 했을 때, 모달 사라지도록 refresh
+window.addEventListener('popstate', function () {
+  this.location.reload(true)
+})
 </script>
 
 <style>

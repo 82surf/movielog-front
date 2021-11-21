@@ -37,8 +37,7 @@ export default {
         data: this.reviewData,
         headers: this.setToken(),
       })
-        .then(res => {
-          console.log(res)
+        .then(() => {
           this.$router.push({ name: 'Profile', params : { username: this.username }})
         })
         .catch(err => {
