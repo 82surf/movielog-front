@@ -1,34 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Signup from '../views/accounts/Signup.vue'
-import Login from '../views/accounts/Login.vue'
 import Profile from '../views/profiles/Profile.vue'
 import MovieSearch from '../views/profiles/MovieSearch.vue'
 import ReviewCreate from '../views/profiles/ReviewCreate.vue'
 import UserSearchResult from '../views/profiles/UserSearchResult'
 import Landing from '../views/Landing.vue'
-import CheckPassword from '../views/accounts/CheckPassword.vue'
 import RecommendMovie from '../views/recommend/RecommendMovie.vue'
 import test from '../views/test.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/signup',
-    name: 'Signup',
-    component: Signup
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/check-password',
-    name: 'CheckPassword',
-    component: CheckPassword
-  },
   {
     path: '/profile/:username',
     name: 'Profile',

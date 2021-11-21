@@ -1,51 +1,66 @@
 <template>
   <div>
-    <h1>Signup</h1>
-    <div>
-      <label for="name">이름</label>
-      <input
-      type="text"
-      id="name"
-      v-model="credentials.name"
-      >
+    <!-- 회원가입 모달 -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signupModalLabel">Sign up</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <label for="name">이름</label>
+              <input
+              type="text"
+              id="name"
+              v-model="credentials.name"
+              >
+            </div>
+            <div>
+              <label for="email">이메일</label>
+              <input
+              type="text"
+              id="email"
+              v-model="credentials.email"
+              >
+            </div>
+            <div>
+              <p v-if="!isUniqueUsername">아이디 중복 체크 필요</p>
+              <p v-else>아이디 중복 체크 완료</p>
+              <label for="username">아이디</label>
+              <input
+                type="text"
+                id="username"
+                v-model="inputUsername"
+              >
+              <button @click="usernameValid">아이디 중복 체크</button>
+            </div>
+            <div>
+              <label for="password">비밀번호</label>
+              <input
+                type="password"
+                id="password"
+                v-model="credentials.password"
+              >
+            </div>
+            <div>
+              <label for="passwordConfirmation">비밀번호 확인</label>
+              <input
+                type="password"
+                id="passwordConfirmation"
+                v-model="credentials.passwordConfirmation"
+              >
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click="checkValid" data-bs-dismiss="modal">Sign up</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <label for="email">이메일</label>
-      <input
-      type="text"
-      id="email"
-      v-model="credentials.email"
-      >
-    </div>
-    <div>
-      <p v-if="!isUniqueUsername">아이디 중복 체크 필요</p>
-      <p v-else>아이디 중복 체크 완료</p>
-      <label for="username">아이디</label>
-      <input
-        type="text"
-        id="username"
-        v-model="inputUsername"
-      >
-      <button @click="usernameValid">아이디 중복 체크</button>
-    </div>
-    <div>
-      <label for="password">비밀번호</label>
-      <input
-        type="password"
-        id="password"
-        v-model="credentials.password"
-      >
-    </div>
-    <div>
-      <label for="passwordConfirmation">비밀번호 확인</label>
-      <input
-        type="password"
-        id="passwordConfirmation"
-        v-model="credentials.passwordConfirmation"
-        @keyup.enter="signup"
-      >
-    </div>
-    <button @click="checkValid">회원가입</button>
+
+    <!-- 회원가입 완료 모달 -->
   </div>
 </template>
 
@@ -75,7 +90,14 @@ export default {
         data: this.credentials
       })
         .then(() => {
-          this.$router.push({ name: 'Login' })
+          for (let credential in this.credentials) {
+            this.credentials[credential] = null
+          }
+          this.inputUsername = null
+          const loginBtn = document.querySelector('#loginBtn')
+          console.log(document)
+          console.log(loginBtn)
+          loginBtn.click()
         })
         .catch(err => {
           console.log(err)
@@ -94,7 +116,7 @@ export default {
       // 유저네임(아이디) 형식 확인
       const userNameCheck =  /^[a-z]+[a-z0-9]{5,19}$/g
       if (!userNameCheck.test(this.inputUsername)) {
-        alert('아이디는 영문자, 숫자 조합으로 5~19자리를 사용해주세요.')
+        alert('아이디는 영문자로 시작하는 영문자, 숫자 조합으로 6~19자리를 사용해주세요.')
         return false
       }
       axios({

@@ -16,47 +16,34 @@
         <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
       </div>
     </div>
+
+
     <div v-else>
       <movie-list-by-genres></movie-list-by-genres>
-      <div class="swiper">
-        <div class="swiper-wrapper">
-          <movie-list-by-likes-item
-            v-for="movie in likeBasedRecommendedMovie"
-            :key="movie.id"
-            :movie="movie"
-          ></movie-list-by-likes-item>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-scrollbar"></div>
-        </div>
-      </div>
-
+      <movie-list-by-likes
+        :movies="likeBasedRecommendedMovie"
+      >
+      </movie-list-by-likes>
       <hr>
-      <div class="swiper">
-        <div class="swiper-wrapper">
-          <movie-list-by-follows-item
-            v-for="movie in followBasedRecommendedMovie"
-            :key="movie.id"
-            :movie="movie"
-          ></movie-list-by-follows-item>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-scrollbar"></div>
-        </div>
-      </div>
+      <movie-list-by-follows-item
+        v-for="movie in followBasedRecommendedMovie"
+        :key="movie.id"
+        :movie="movie"
+      ></movie-list-by-follows-item>
       <hr>
+      
       <div class="swiper">
         <div class="swiper-wrapper">
-          <movie-list-by-following-likes-item
+          <!-- <movie-list-by-following-likes-item
             v-for="movie in followinglikeBasedRecommendedMovie"
             :key="movie.id"
             :movie="movie"
-            ></movie-list-by-following-likes-item>
+            ></movie-list-by-following-likes-item> -->
+            <movie-list-by-following-likes-item></movie-list-by-following-likes-item>
+        </div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
         <div class="swiper-scrollbar"></div>
-
-        </div>
       </div>
       <hr>
 
@@ -67,10 +54,10 @@
 <script>
 import axios from 'axios'
 import MovieListByGenres from '@/components/recommend_movie/MovieListByGenres.vue'
-import MovieListByLikesItem from '@/components/recommend_movie/MovieListByLikesItem.vue'
+// import MovieListByLikesItem from '@/components/recommend_movie/MovieListByLikesItem.vue'
+import MovieListByLikes from '@/components/recommend_movie/MovieListByLikes.vue'
 import MovieListByFollowsItem from '@/components/recommend_movie/MovieListByFollowsItem.vue'
 import MovieListByFollowingLikesItem from '@/components/recommend_movie/MovieListByFollowingLikesItem.vue'
-
 const API_KEY = '70b5f8cc0018e10bfcf6146a7aaf3dec'
 
 export default {
@@ -85,7 +72,7 @@ export default {
   },
   components: {
     MovieListByGenres,
-    MovieListByLikesItem,
+    MovieListByLikes,
     MovieListByFollowsItem,
     MovieListByFollowingLikesItem,
   },
@@ -104,7 +91,6 @@ export default {
         headers: this.setToken()
       })
         .then(res => {
-          console.log(res)
           this.likeBasedRecommendedMovie = res.data
         })
         .catch(err => {
@@ -118,7 +104,6 @@ export default {
         headers: this.setToken()
       })
         .then(res => {
-          console.log(res)
           this.followBasedRecommendedMovie = res.data
         })
         .catch(err => {
@@ -132,7 +117,6 @@ export default {
         headers: this.setToken()
       })
         .then(res => {
-          console.log(res)
           this.followinglikeBasedRecommendedMovie = res.data
         })
         .catch(err => {
@@ -158,11 +142,11 @@ export default {
     this.getMovieByFollowLikes()
     setTimeout(() => {
       this.isLoading=false
-    },)
-  }
+    },0)
+  },
 }
+
 </script>
 
 <style>
-
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <img :src="`https://image.tmdb.org/t/p/original/${movie.thumbnail_path}`" alt="" style="width:200px">
+  <div v-if="movie">
+    <img v-if="movie.thumbnail_path" :src="`https://image.tmdb.org/t/p/original/${movie.thumbnail_path}`" alt="" style="width:200px">
+    <img v-else :src="`final-pjt-front/src/assets/profile/default-image.jpg`" alt="" style="width:200px">
     <br>
-    {{ movieData.title }}
     <movie-list-by-following-likes-item-modal 
       :movie-data="movieData"
       :review-data="movie"

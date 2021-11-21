@@ -19,20 +19,24 @@
         </ul>
         <ul v-else class="nav">
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'Signup'}">Sign up</router-link>
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModal">Sign up</a>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'Login' }">Login</router-link>
+            <a id="loginBtn" class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
           </li>
         </ul>
       </div>
     </nav>
-    <router-view @login="isLogin=true"/>
+    <router-view/>
+    <login @login="isLogin=true"></login>
+    <signup></signup>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Login from '@/components/accounts/Login.vue'
+import Signup from '@/components/accounts/Signup.vue'
 
 export default {
   name: 'App',
@@ -41,6 +45,10 @@ export default {
       isLogin: false,
       inputUsername: null,
     }
+  },
+  components: {
+    Login,
+    Signup,
   },
   methods: {
     logout: function () {
@@ -63,8 +71,6 @@ export default {
     const token = localStorage.getItem('jwt')
     if (token) {
       this.isLogin = true
-    } else {
-      this.$router.push({ name: 'Login' })
     }
   }
 }

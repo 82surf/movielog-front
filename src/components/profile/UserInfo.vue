@@ -16,13 +16,16 @@
       <button v-else @click="followToggle">Follow</button>
     </div>
     <div v-else>
-      <button @click="goToUpdate">회원 정보 수정</button>
+      <button data-bs-toggle="modal" data-bs-target="#checkPasswordModal">회원 정보 수정</button>
     </div>
     <hr>
+    <check-password></check-password>
   </div>
 </template>
 
 <script>
+import CheckPassword from '@/components/accounts/CheckPassword.vue'
+
 import axios from 'axios'
 import { mapState } from 'vuex'
 
@@ -41,6 +44,9 @@ export default {
       selectedFile: null,
       profile_image_path: null,
     }
+  },
+  components: {
+    CheckPassword,
   },
   props: {
     paramUsername: String,
@@ -97,9 +103,6 @@ export default {
         .catch(err => {
           console.log(err)
         })
-    },
-    goToUpdate: function () {
-      this.$router.push({ name: 'CheckPassword'})
     },
   },
   created: function() {

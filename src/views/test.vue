@@ -1,3 +1,4 @@
+<!--
 <template>
   <div>
     <button @click="getMovies">GO</button>
@@ -61,3 +62,60 @@ export default {
 <style>
 
 </style>
+-->
+<template>
+    <div>
+      <!-- <keep-alive>
+        <component v-if="isMobile" :is="'IntroSwiper'" :swiperOption="mobileOption"></component>
+      </keep-alive>
+      <keep-alive>
+        <component v-if="!isMobile" :is="'IntroSwiper'" :swiperOption="pcOption"></component>
+      </keep-alive> -->
+      <intro-swiper :swiper-option="mobileOption"></intro-swiper>
+	</div>
+</template>
+<script>
+import IntroSwiper from '@/components/IntroSwiper.vue'
+export default {
+  name: 'IntroPage',
+  data() {
+    return {
+      isMobile: false,
+      pcStandard: 769, // PC 화면의 Viewport 기준점
+      mobileOption: { // 모바일 옵션 지정
+        slidesPerView: 1,
+        effect: 'fade',
+        fadeEffect: {
+          crossFade: true
+        },
+        loop: true,
+      },
+      pcOption: { // PC 옵션 지정
+        slidesPerView: 3,
+      }
+    }
+  },
+  methods: {
+    checkIsMobile: function () {
+      this.isMobile = (window.innerWidth < this.pcStandard)
+    },
+    handleResize: function () {
+      this.$nextTick(function () {
+        this.checkIsMobile()
+      })
+    }
+  },
+  created () {
+    this.checkIsMobile()
+  },
+  mounted () {
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.handleResize)
+  },
+  components: {
+    IntroSwiper
+  }
+}
+</script>

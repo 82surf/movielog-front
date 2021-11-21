@@ -2,7 +2,6 @@
   <div>
     <img :src="`https://image.tmdb.org/t/p/original/${movie.thumbnail_path}`" alt="" style="width:200px">
     <br>
-    {{ movieData.title}}
     <movie-list-by-follows-item-modal 
       :movie-data="movieData"
       :review-data="movie"

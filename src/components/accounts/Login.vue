@@ -1,24 +1,37 @@
 <template>
   <div>
-    <h1>Login</h1>
-    <div>
-      <label for="username">사용자 이름</label>
-      <input
-        type="text"
-        id="username"
-        v-model="credentials.username"
-      >
+    <!-- 로그인 모달 -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <label for="username">사용자 이름</label>
+              <input
+                type="text"
+                id="username"
+                v-model="credentials.username"
+              >
+            </div>
+            <div>
+              <label for="password">비밀번호</label>
+              <input
+                type="password"
+                id="password"
+                v-model="credentials.password"
+              >
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="checkValid">Login</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <label for="password">비밀번호</label>
-      <input
-        type="password"
-        id="password"
-        v-model="credentials.password"
-        @keyup.enter="login"
-      >
-    </div>
-    <button @click="checkValid">로그인</button>
   </div>
 </template>
 
@@ -62,6 +75,7 @@ export default {
         alert('비밀번호는 영문자, 숫자, 특수문자 조합으로 6~25자리를 사용해주세요.')
         return false
       }
+      this.login()
     },
     login: function () {
       axios({
@@ -73,7 +87,9 @@ export default {
           localStorage.setItem('jwt', res.data.token)
           this.$emit('login')
           this.$store.dispatch('getUsername', this.credentials.username)
-          this.$router.push({ name: 'Profile', params: {username:this.credentials.username} })
+          this.$router.push({ name: 'Profile', params: {username:this.credentials.username} }),
+          this.credentials.username = null,
+          this.credentials.password = null
         })
         .catch(err => {
           console.log(err)

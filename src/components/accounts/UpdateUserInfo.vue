@@ -1,30 +1,49 @@
 <template>
   <div>
-    <h1>회원 정보 수정</h1>
-    <input type="file" @change="onFileSelected">
-    <div>
-      <p v-if="!isUniqueUsername">아이디 중복 체크 필요</p>
-      <p v-else>아이디 중복 체크 완료</p>
-      <label for="username">아이디</label>
-      <input v-model="inputUsername" type="text" id="username">
-      <button @click="usernameValid">아이디 중복 검사</button>
-    </div>
-    <div>
-      <label for="email">이메일</label>
-      <input v-model="newUserInfo.email" type="text" id="email">
-    </div>
-    <div>
-      <label for="name">이름</label>
-      <input v-model="newUserInfo.name" type="text" id="name">
-    </div>
-    <div>
-      <p>프로필 공개 여부</p>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="not-private" v-model="newUserInfo.isPrivate">
-        <label class="form-check-label" for="not-private">페이지 팔로워공개</label>
+    <!-- 회원 정보 수정 모달 -->
+    <div class="modal fade" id="updateUserInfoModal" tabindex="-1" aria-labelledby="updateUserInfoModalLabel" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateUserInfoModalLabel">회원 정보 수정</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="file" @change="onFileSelected">
+            <div>
+              <p v-if="!isUniqueUsername && isInputUsernameChanged">아이디 중복 체크 필요</p>
+              <p v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</p>
+              <label for="username">아이디</label>
+              <input v-model="inputUsername" type="text" id="username">
+              <button v-show="isInputUsernameChanged" @click="usernameValid">아이디 중복 확인</button>
+            </div>
+            <div>
+              <label for="email">이메일</label>
+              <input v-model="dataSet.email" type="text" id="email">
+            </div>
+            <div>
+              <label for="name">이름</label>
+              <input v-model="dataSet.name" type="text" id="name">
+            </div>
+            <div>
+              <p>프로필 공개 여부</p>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="not-private" v-model="dataSet.isPrivate">
+                <label class="form-check-label" for="not-private">페이지 팔로워공개</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click="checkValid">회원 정보 수정</button>
+            <a
+              id="updateModalCloseBtn"
+              data-bs-dismiss="modal" style="display: none;"
+            >
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-    <button @click="checkValid">수정 완료</button>
   </div>
 </template>
 
@@ -38,9 +57,6 @@ export default {
       newUserInfo: {
         // 중복검사를 통과한 아이디
         username: null,
-        email: this.dataSet.email,
-        name: this.dataSet.name,
-        isPrivate: this.dataSet.isPrivate,
       },
       selectedImage: null,
       // 아이디 중복 검사 통과 여부
@@ -48,6 +64,7 @@ export default {
       // 입력창에 입력된 아이디
       // props에서 받은 username이 들어가있다.
       inputUsername: this.username,
+      isInputUsernameChanged: false,
     }
   },
   props: {
@@ -81,7 +98,7 @@ export default {
       // 유저네임(아이디) 형식 확인
       const userNameCheck =  /^[a-z]+[a-z0-9]{5,19}$/g
       if (!userNameCheck.test(this.inputUsername)) {
-        alert('아이디는 영문자, 숫자 조합으로 5~19자리를 사용해주세요.')
+        alert('아이디는 영문자로 시작하는 영문자, 숫자 조합으로 6~19자리를 사용해주세요.')
         return false
       }
       axios({
@@ -91,9 +108,10 @@ export default {
         .then(res => {
           // 아이디 중복 검사를 통과하면 newUserInfo에 유저네임 저장
           this.isUniqueUsername = res.data.isUnique
-          this.newUserInfo.username = this.inputUsername
           if (!this.isUniqueUsername) {
             alert('이미 존재하는 아이디입니다.')
+          } else {
+            this.newUserInfo.username = this.inputUsername
           }
         })
         .catch(err => {
@@ -102,34 +120,34 @@ export default {
     },
     checkValid: function () {
       // 이름, 이메일 빈 값 확인
-      if (!(this.newUserInfo.email && this.newUserInfo.name)) {
+      if (!(this.dataSet.email && this.dataSet.name)) {
         alert('빈 항목이 있습니다.')
         return false
       }
       // 이메일 공백 포함 확인
-      if (this.newUserInfo.email.search(/\s/) != -1) {
+      if (this.dataSet.email.search(/\s/) != -1) {
         alert('이메일에 공백이 포함되어 있습니다.')
         return false
       }
       // 이메일 형식 확인
       const emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
-      if (!emailCheck.test(this.newUserInfo.email)) {
+      if (!emailCheck.test(this.dataSet.email)) {
         alert('이메일 형식이 올바르지 않습니다.')
         return false
       }
       // 이름 공백 포함 확인
-      if (this.newUserInfo.name.search(/\s/) != -1) {
+      if (this.dataSet.name.search(/\s/) != -1) {
         alert('이름에 공백이 포함되어 있습니다.')
         return false
       }
       // 이름 형식 확인
       const nameCheck = /^[가-힣]{2,6}$/
-      if (!nameCheck.test(this.newUserInfo.name)) {
+      if (!nameCheck.test(this.dataSet.name)) {
         alert('이름은 한글 2~6자로 작성해주세요.')
         return false
       }
       // 아이디 중복 검사 통과 여부
-      if (!this.isUniqueUsername) {
+      if (!this.isUniqueUsername && this.isInputUsernameChanged) {
         alert('아이디 중복검사를 통과하지 못했습니다.')
         return false
       }
@@ -144,10 +162,10 @@ export default {
       if (this.selectedImage) {
         userData.append('profile_image', this.selectedImage, this.selectedImage.name)
       }
-      userData.append('username', this.newUserInfo.username)
-      userData.append('email', this.newUserInfo.email)
-      userData.append('name', this.newUserInfo.name)
-      userData.append('is_private', this.newUserInfo.isPrivate)
+      userData.append('username', this.inputUsername)
+      userData.append('email', this.dataSet.email)
+      userData.append('name', this.dataSet.name)
+      userData.append('is_private', this.dataSet.isPrivate)
       // api 요청
       axios({
         method: 'post',
@@ -159,6 +177,8 @@ export default {
         }
       })
         .then(() => {
+          const updateModalCloseBtn = document.querySelector('#updateModalCloseBtn')
+          updateModalCloseBtn.click()
           this.login()
         })
         .catch(err => {
@@ -180,6 +200,8 @@ export default {
           localStorage.setItem('jwt', res.data.token)
           this.$store.dispatch('getUsername', credentials.username)
           this.$router.push({ name: 'Profile', params: {username:credentials.username} })
+          this.dataSet.password = null
+          alert('회원정보 수정이 완료되었습니다.')
         })
         .catch(err => {
           console.log(err)
@@ -188,10 +210,13 @@ export default {
   },
   watch: {
     inputUsername: function (newVal) {
-      if (newVal !== this.newUserInfo.username) {
+      this.isInputUsernameChanged = true
+      if (newVal === this.username) {
+        this.isUniqueUsername = true
+      } else if (newVal !== this.newUserInfo.username) {
         this.isUniqueUsername = false
       }
-    }
+    },
   }
 }
 </script>
