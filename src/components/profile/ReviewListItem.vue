@@ -19,6 +19,7 @@
     
     <!-- 렌더링된 카드 -->
     <div v-else>
+      <div v-if="!review.is_private||paramUsername===username">
       <div data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
         <p>관람일: {{ review.watched_at }}</p>
         <div v-if="review.thumbnail_path">
@@ -34,7 +35,7 @@
         :paramUsername="paramUsername"
         @delete-review="deleteReview"
       ></review-list-item-modal>
-        <!-- :class="{'modal fade':isSelected}"  -->
+      </div>
     </div>
   <hr>
   </div>
@@ -57,6 +58,7 @@ export default {
   props: {
     review: Object,
     paramUsername: String,
+    username: String,
   },
   methods: {
     // onClick: function(){
@@ -70,6 +72,9 @@ export default {
     setTimeout(() => {
       this.isLoading=false
     }, 20)
+  },
+  computed: {
+    
   }
 } 
 </script>

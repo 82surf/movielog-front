@@ -1,9 +1,13 @@
 <template>
-  <div class="card card-body mb-3">
+  <div class="card card-body my-3">
+    <div>
     <span>{{ comment.user.username }}</span>
     <span>{{ comment.content }}</span>
-    <button v-if="username===comment.user.username" @click="deleteComment" >X</button>
-    <button @click="likeComment" :class="{'btn fas fa-heart fs-3 text-danger': likes, 'btn far fa-heart fs-3' : !likes }"><span>{{ comment.like_count }}</span></button>
+    <div class="text-end">
+      <button @click="likeComment" :class="{'btn fas fa-heart fs-4 text-danger': likes, 'btn far fa-heart fs-4' : !likes } "><span>{{ comment.like_count }}</span></button>
+      <button v-if="username===comment.user.username" @click="deleteComment" class="text-end btn-close"></button>
+    </div>
+    </div>
   </div>
 </template>
 

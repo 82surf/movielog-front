@@ -3,13 +3,23 @@
     <div class="modal fade" :id="`Modal${review.pk}`" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header justify-content-between">
             <h5 class="modal-title" id="exampleModalLabel">{{ review.movie_title }}</h5>
-            <button @click="likeReview" :class="{'btn fas fa-heart fs-3 text-danger': likes, 'btn far fa-heart fs-3' : !likes }"></button>
+            <div class="star-ratings mx-5">
+              <div 
+                class="star-ratings-fill space-x-2"
+                :style="{ width: ratingToPercent() + '%' }"
+              >
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+              <div class="star-ratings-base space-x-2">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+            </div>
             <div v-if="paramUsername===username">
               <button type="button" class="btn btn-secondary" :data-bs-target="`#Modal${review.pk}update`" data-bs-toggle="modal" >수정하기</button>
             </div>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
               <div class="mb-3">
@@ -21,13 +31,12 @@
               <div class="mb-3">
                 <label for="message-text" class="col-form-label">관람일: {{ review.watched_at }}</label>
               </div>
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">평점: {{ review.rank }}</label>
-              </div>
+              
               <div class="mb-3">
                 <label for="message-text" class="col-form-label">내용: {{ review.content }}</label>
               </div>
             <div class="collapse multi-collapse mb-3" id="commentCollapse">
+              <hr>
               <input type="text" v-model.trim="commentInput" @keyup.enter="createComment">
               <review-list-item-modal-comment 
                 v-for="comment in review.comment_set"
@@ -40,8 +49,9 @@
             </div>
           </div>
             
-          <div class="modal-footer">
+          <div class="modal-footer justify-content-between">
             <p>
+            <button @click="likeReview" :class="[{'btn fas fa-heart fs-3 text-danger': likes, 'btn far fa-heart fs-3' : !likes, },'text-nowrap']"></button>
               <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapse" aria-expanded="false" aria-controls="collapseExample">
                 댓글
               </button>
@@ -50,11 +60,29 @@
         </div>
       </div>
     </div>
+
+
     <div class="modal fade" :id="`Modal${review.pk}update`" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">{{ review.movie_title }}</h5>
+            <div class="star-rating space-x-4 mx-auto">
+              <input type="radio" :id="`5-stars${review.pk}`" :name="`rating${review.pk}`" value="5" v-model="review.rank">
+              <label :for="`5-stars${review.pk}`" class="star pr-4 fs-3">★</label>
+              <input type="radio" :id="`4-stars${review.pk}`" :name="`rating${review.pk}`" value="4" v-model="review.rank">
+              <label :for="`4-stars${review.pk}`" class="star fs-3">★</label>
+              <input type="radio" :id="`3-stars${review.pk}`" :name="`rating${review.pk}`" value="3" v-model="review.rank">
+              <label :for="`3-stars${review.pk}`" class="star fs-3">★</label>
+              <input type="radio" :id="`2-stars${review.pk}`" :name="`rating${review.pk}`" value="2" v-model="review.rank">
+              <label :for="`2-stars${review.pk}`" class="star fs-3">★</label>
+              <input type="radio" :id="`1-star${review.pk}`" :name="`rating${review.pk}`" value="1" v-model="review.rank">
+              <label :for="`1-star${review.pk}`" class="star fs-3">★</label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" :id="`not-private-update-input${review.pk}`" v-model="isPrivate">
+              <label class="form-check-label" :for="`not-private-update-input${review.pk}`">팔로워에게만 공개</label>
+            </div>
             <button type="button" class="btn btn-secondary" :data-bs-target="`#Modal${review.pk}`" data-bs-toggle="modal" @click="updateReview">수정완료</button>
             <button type="button" class="btn btn-danger" :data-bs-target="`#Modal${review.pk}delete`"  data-bs-toggle="modal">일기삭제</button>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -71,10 +99,6 @@
               <div class="mb-3">
                 <span>관람일:</span>
                 <input type="date" v-model="watched_at">
-              </div>
-              <div class="mb-3">
-                <span>평점: </span>
-                <input type="text" v-model="review.rank">
               </div>
               <div class="mb-3">
                 <span>내용: </span>
@@ -122,10 +146,15 @@ export default {
     return {
       likes: null,
       commentInput: null,
-      watched_at: this.review.watched_at
+      watched_at: this.review.watched_at,
+      isPrivate: this.review.is_private,
     }
   },
   methods: {
+    ratingToPercent:function() {
+      const score = this.review.rank * 20;
+      return score + 1.5;
+    },
     setToken: function () {
       const token = localStorage.getItem('jwt')
       const config = {
@@ -142,7 +171,8 @@ export default {
         watched_at: this.watched_at,
         tmdb_movie_id: this.review.tmdb_movie_id,
         thumbnail_path: this.review.thumbnail_path,
-        movie_title: this.review.movie_title
+        movie_title: this.review.movie_title,
+        is_private: this.isPrivate
       }
       axios({
         method: 'put',
@@ -237,6 +267,67 @@ window.addEventListener('popstate', function () {
 })
 </script>
 
-<style>
+<style scoped>
+.updatebtn {
+  margin-left: 450px;
+}
+.star-ratings {
+  color: #aaa9a9; 
+  position: relative;
+  unicode-bidi: bidi-override;
+  width: max-content;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  -webkit-text-fill-color: transparent; /* Will override color (regardless of order)*/
+  -webkit-text-stroke-width: 1.3px;
+  -webkit-text-stroke-color: #2b2a29;
+}
+ 
+ .star-ratings-fill {
+  color: #fff58c;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-text-fill-color: gold;
+}
+ 
+ .star-ratings-base {
+  z-index: 0;
+  padding: 0;
+}
+.star-rating {
+display: flex;
+flex-direction: row-reverse;
+font-size: 2.25rem;
+line-height: 2.5rem;
+justify-content: space-around;
+padding: 0 0.2em;
+text-align: center;
+width: 5em;
+}
+
+.star-rating input {
+display: none;
+}
+
+.star-rating label {
+-webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+-webkit-text-stroke-width: 1.3px;
+-webkit-text-stroke-color: #2b2a29;
+cursor: pointer;
+}
+
+.star-rating :checked ~ label {
+-webkit-text-fill-color: gold;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+-webkit-text-fill-color: #fff58c;
+}
 
 </style>
