@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-auto mt-4"
+    class="container mx-auto mt-4"
     style="width: 30rem"
   >
     <h3 style="text-align: center">검색 결과</h3>

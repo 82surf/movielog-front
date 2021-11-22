@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <movie-search-form @input-change="inputChange"></movie-search-form>
     <search-movie-list :movieData="searchMovieData"></search-movie-list>
     

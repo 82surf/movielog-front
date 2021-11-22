@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div style="height: 416px">
     <!-- 로딩 화면 -->
     <div class="card" aria-hidden="true" v-if="isLoading">
       <div class="card-body">
@@ -16,28 +16,37 @@
         <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
       </div>
     </div>
-    
-    <!-- 렌더링된 카드 -->
+
+    <!-- 리뷰 카드 -->
     <div v-else>
       <div v-if="!review.is_private||paramUsername===username">
-      <div data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
-        <p>관람일: {{ review.watched_at }}</p>
-        <div v-if="review.thumbnail_path">
-          <img :src="`https://image.tmdb.org/t/p/original/${review.thumbnail_path}`" alt="profile img" style="width:300px">
+        <div class="review-wrapper" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
+          <img
+            class="review-poster"
+            v-if="review.thumbnail_path"
+            :src="`https://image.tmdb.org/t/p/original/${review.thumbnail_path}`"
+            alt="profile img"
+          >
+          <div v-else class="default-poster"></div>
+          <div class="review-month-n-date">
+            <span class="review-month">{{ engMonth }}  </span>
+            <span class="review-date">{{ date }}</span>
+          </div>
+          <div class="content-wrapper">
+            <p class="review-movie-title">{{ review.movie_title }}</p>
+            <p class="review-oneline">{{ review.oneline_review }}</p>
+          </div>
         </div>
-        <p>oneline_review: {{ review.oneline_review }}</p>
-        <p>quote: {{ review.quote }}</p>
-        <p>좋아요: {{ review.like_count }}</p>
-        <p>{{ year}}</p>
       </div>
-      <review-list-item-modal 
+
+      <!-- 모달 -->
+      <review-list-item-modal
         :review="review"
         :paramUsername="paramUsername"
         @delete-review="deleteReview"
       ></review-list-item-modal>
-      </div>
+
     </div>
-  <hr>
   </div>
 </template>
 
@@ -50,6 +59,8 @@ export default {
       isSelected: false,
       isLoading: true,
       year : new Date(this.review.watched_at).getFullYear(),
+      month: new Date(this.review.watched_at).getMonth(),
+      date: new Date(this.review.watched_at).getDate(),
     }
   },
   components: {
@@ -74,11 +85,56 @@ export default {
     }, 20)
   },
   computed: {
-    
+    engMonth: function () {
+      const encode = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      return encode[this.month + 1]
+    }
   }
-} 
+}
 </script>
 
-<style>
-
+<style scoped>
+/* .review-container {
+  display: block;
+} */
+.review-wrapper {
+  position: relative;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+.review-wrapper .review-poster {
+  position: absolute;
+  width: 280px;
+  filter: brightness(50%);
+}
+.review-wrapper .default-poster {
+  position: absolute;
+  width: 280px;
+  height: 375px;
+  background-color: gray;
+}
+.review-wrapper .review-month-n-date {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+}
+.review-wrapper .review-date {
+  position: absolute;
+  left: 52px;
+}
+.review-wrapper .content-wrapper {
+  position: absolute;
+  bottom: -400px;
+  left: 24px;
+}
+.review-wrapper .content-wrapper .review-movie-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.review-wrapper .content-wrapper .review-oneline {
+  font-size: 14px;
+  width: 240px;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <img :src="`https://image.tmdb.org/t/p/original/${movieData.poster_path}`" style="width:200px; float:left;" alt="poster image">
     <review-form @create-review="createReview"></review-form>
   </div>

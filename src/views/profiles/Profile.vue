@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <user-info :paramUsername="getUsername" @togglePrivate="togglePrivate"></user-info>
     <review-list
       v-if="!(getUsername!==username && isPrivate)"
