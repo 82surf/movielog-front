@@ -1,5 +1,6 @@
 <template>
   <div >
+    <!-- 로딩 화면 -->
     <div class="card" aria-hidden="true" v-if="isLoading">
       <div class="card-body">
         <h5 class="card-title placeholder-glow">
@@ -15,6 +16,8 @@
         <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
       </div>
     </div>
+    
+    <!-- 렌더링된 카드 -->
     <div v-else>
       <div data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
         <p>관람일: {{ review.watched_at }}</p>

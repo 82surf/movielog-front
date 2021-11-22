@@ -1,25 +1,48 @@
 <template>
   <div>
-    <img :src="`http://127.0.0.1:8000${profile_image_path}`" alt="" style="width: 360px">
-    <p>ID: {{ userInfo.username }}</p>
-    <p>이 름 : {{ userInfo.name }}</p>
-    <div v-if="username !== paramUsername && isPrivate">
-      <p>follower: 비공개</p>
-      <p>following: 비공개</p>
+    <div class="user-info">
+      <!-- 프로필 사진 -->
+      <img class="profile-img" :src="`http://127.0.0.1:8000${profile_image_path}`" alt="profile-img">
+
+      <div class="user-info-container">
+        <div class="username-wrapper">
+          <!-- 유저네임(아이디) -->
+          <div class="username">{{ userInfo.username }}</div>
+
+          <!-- 내 페이지: 회원정보수정 버튼 / 남 페이지: 팔로우 버튼 -->
+          <div class="user-info-btn-group">
+            <div v-if="username!==paramUsername">
+              <a class="btn btn-primary follow-btn" v-if="userInfo.isFollowing" @click="followToggle">Unfollow</a>
+              <a class="btn btn-primary follow-btn" v-else @click="followToggle">Follow</a>
+            </div>
+            <div v-else>
+              <div class="settings-btn">
+                <i class="material-icons-sharp settings-ico" data-bs-toggle="modal" data-bs-target="#checkPasswordModal">settings</i>
+                <div class="settings-bg"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 팔로워 수 -->
+        <div class="follow-info">
+          <div v-if="username !== paramUsername && isPrivate">
+            <div>비공개 계정입니다.</div>
+          </div>
+          <div v-else>
+            <span class="follower-count">{{ userInfo.followerCount }}</span>
+            <span class="follower-label">followers</span>
+            <span class="following-count">{{ userInfo.followingCount }}</span>
+            <span class="following-label">followings</span>
+          </div>
+        </div>
+      </div>
+
+
     </div>
-    <div v-else>
-      <p>follower:{{ userInfo.followerCount }}</p>
-      <p>following:{{ userInfo.followingCount }}  </p>
-    </div>
-    <div v-if="username!==paramUsername">
-      <button v-if="userInfo.isFollowing" @click="followToggle">Unfollow</button>
-      <button v-else @click="followToggle">Follow</button>
-    </div>
-    <div v-else>
-      <button data-bs-toggle="modal" data-bs-target="#checkPasswordModal">회원 정보 수정</button>
-    </div>
+
     <hr>
-    <check-password></check-password>
+    <check-password @get-user-info="getUserinfo"></check-password>
   </div>
 </template>
 
@@ -72,6 +95,7 @@ export default {
           this.userInfo.name = res.data.name
           this.isPrivate = res.data.is_private
           this.userInfo.isFollowing = res.data.isFollowing
+          this.getProfileImage()
           this.$emit('togglePrivate', res.data.is_private)
         })
         .catch(err => {
@@ -107,7 +131,6 @@ export default {
   },
   created: function() {
     this.getUserinfo()
-    this.getProfileImage()
   },
   computed: {
     ...mapState([
@@ -122,6 +145,60 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left: 40px;
+  font-family: 'Reem Kufi', sans-serif;
+}
+.user-info .profile-img {
+  width: 150px;
+  border-radius: 16px;
+}
+.user-info .user-info-container {
+  margin-left: 24px;
+}
+.user-info .user-info-container .username-wrapper {
+  display: flex;
+  align-items: center;
+}
+.user-info .user-info-container .username-wrapper .username {
+  font-size: 28px;
+  margin-right: 16px;
+}
+.user-info .user-info-container .username-wrapper .user-info-btn-group .follow-btn {
+  height: 30px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.user-info .user-info-container .username-wrapper .user-info-btn-group .settings-btn {
+  position: relative;
+  cursor: pointer;
+}
+.user-info .user-info-container .username-wrapper .user-info-btn-group .settings-btn .settings-ico{
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  color: white;
+  font-size: 24px;
+}
+.user-info .user-info-container .username-wrapper .user-info-btn-group .settings-btn .settings-bg {
+  background-color: #6c757d;
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+}
+.user-info .follow-info .follower-count,.following-count{
+  font-size: 28px;
+  margin-right: 8px;
+}
+.user-info .follow-info .follower-label,.following-label{
+  font-size: 16px;
+}
+.user-info .follow-info .follower-label{
+  margin-right: 36px;
+}
 </style>

@@ -40,6 +40,7 @@
       :dataSet="dataSet"
       :username="username"
       @clear-data-set="clearDataSet"
+      @get-user-info="getUserInfo"
     >
     </update-user-info>
   </div>
@@ -69,6 +70,9 @@ export default {
     }
   },
   methods: {
+    getUserInfo: function () {
+      this.$emit('get-user-info')
+    },
     clearDataSet: function () {
       for (let key in this.dataSet) {
         this.dataSet[key] = null,
