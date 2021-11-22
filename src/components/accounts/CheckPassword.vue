@@ -6,7 +6,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="checkPasswordModalLabel">비밀번호 확인</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearDataSet"></button>
           </div>
           <!-- 모달 바디 -->
           <div class="modal-body">
@@ -39,7 +39,7 @@
     <update-user-info
       :dataSet="dataSet"
       :username="username"
-      @clearDataSet="clearDataSet"
+      @clear-data-set="clearDataSet"
     >
     </update-user-info>
   </div>
@@ -69,6 +69,13 @@ export default {
     }
   },
   methods: {
+    clearDataSet: function () {
+      for (let key in this.dataSet) {
+        this.dataSet[key] = null,
+        this.isValid = false
+        this.errMsgFlag = false
+      }
+    },
     setToken: function () {
       const token = localStorage.getItem('jwt')
       const config = {

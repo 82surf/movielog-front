@@ -65,6 +65,9 @@ export default {
         })
     },
   },
+  created: function () {
+    this.getCredit()
+  }
 }
 </script>
 
