@@ -6,61 +6,59 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="signupModalLabel">Sign up</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearInput"></button>
           </div>
           <div class="modal-body">
             <div>
-              <label for="name">이름</label>
+              <label for="name-signup-input">이름</label>
               <input
               type="text"
-              id="name"
+              id="name-signup-input"
               v-model="credentials.name"
               >
             </div>
             <div>
-              <label for="email">이메일</label>
+              <label for="email-signup-input">이메일</label>
               <input
               type="text"
-              id="email"
+              id="email-signup-input"
               v-model="credentials.email"
               >
             </div>
             <div>
               <p v-if="!isUniqueUsername">아이디 중복 체크 필요</p>
               <p v-else>아이디 중복 체크 완료</p>
-              <label for="username">아이디</label>
+              <label for="username-signup-input">아이디</label>
               <input
                 type="text"
-                id="username"
+                id="username-signup-input"
                 v-model="inputUsername"
               >
               <button @click="usernameValid">아이디 중복 체크</button>
             </div>
             <div>
-              <label for="password">비밀번호</label>
+              <label for="password-signup-input">비밀번호</label>
               <input
                 type="password"
-                id="password"
+                id="password-signup-input"
                 v-model="credentials.password"
               >
             </div>
             <div>
-              <label for="passwordConfirmation">비밀번호 확인</label>
+              <label for="password-confirmation-signup-input">비밀번호 확인</label>
               <input
                 type="password"
-                id="passwordConfirmation"
+                id="password-confirmation-signup-input"
                 v-model="credentials.passwordConfirmation"
               >
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="checkValid" data-bs-dismiss="modal">Sign up</button>
+            <button type="button" class="btn btn-primary" @click="checkValid">Sign up</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- 회원가입 완료 모달 -->
   </div>
 </template>
 
@@ -83,6 +81,14 @@ export default {
     }
   },
   methods: {
+    clearInput: function () {
+      console.log('clear signup input!')
+      for (let key in this.credentials) {
+        this.credentials[key] = null
+      }
+      this.isUniqueUsername = false
+      this.inputUsername = null
+    },
     signup: function () {
       axios({
         method: 'post',
@@ -94,9 +100,8 @@ export default {
             this.credentials[credential] = null
           }
           this.inputUsername = null
+          // Navbar의 login 버튼
           const loginBtn = document.querySelector('#loginBtn')
-          console.log(document)
-          console.log(loginBtn)
           loginBtn.click()
         })
         .catch(err => {
@@ -110,6 +115,7 @@ export default {
         return false
       }
       // 공백 포함 확인
+      console.log(this.inputUsername.search(/\s/))
       if (this.inputUsername.search(/\s/) != -1) {
         alert('아이디에는 공백이 포함될 수 없습니다.')
       }
@@ -121,7 +127,7 @@ export default {
       }
       axios({
         method: 'get',
-        url: `${process.env.VUE_APP_SERVER_URL}/accounts/check-username/${this.inputUsername}`,
+        url: `${process.env.VUE_APP_SERVER_URL}/accounts/check-username/${this.inputUsername}/`,
       })
         .then(res => {
           this.isUniqueUsername = res.data.isUnique
@@ -142,9 +148,8 @@ export default {
       }
 
       // 공백 포함 확인
-      const vals = Object.values(this.credentials)
-      for (let val of vals) {
-        if (val.search(/\s/) != -1) {
+      for (let key in this.credentials) {
+        if (key !== 'username' && (this.credentials[key].search(/\s/) != -1)) {
           alert('공백이 포함된 항목이 있습니다.')
           return false
         }

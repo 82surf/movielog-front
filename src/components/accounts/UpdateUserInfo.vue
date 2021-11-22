@@ -6,30 +6,30 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="updateUserInfoModalLabel">회원 정보 수정</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="$emit('clear-data-set')"></button>
           </div>
           <div class="modal-body">
             <input type="file" @change="onFileSelected">
             <div>
               <p v-if="!isUniqueUsername && isInputUsernameChanged">아이디 중복 체크 필요</p>
               <p v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</p>
-              <label for="username">아이디</label>
-              <input v-model="inputUsername" type="text" id="username">
+              <label for="username-update-input">아이디</label>
+              <input v-model="inputUsername" type="text" id="username-update-input">
               <button v-show="isInputUsernameChanged" @click="usernameValid">아이디 중복 확인</button>
             </div>
             <div>
-              <label for="email">이메일</label>
-              <input v-model="dataSet.email" type="text" id="email">
+              <label for="email-update-input">이메일</label>
+              <input v-model="dataSet.email" type="text" id="email-update-input">
             </div>
             <div>
-              <label for="name">이름</label>
-              <input v-model="dataSet.name" type="text" id="name">
+              <label for="name-update-input">이름</label>
+              <input v-model="dataSet.name" type="text" id="name-update-input">
             </div>
             <div>
               <p>프로필 공개 여부</p>
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="not-private" v-model="dataSet.isPrivate">
-                <label class="form-check-label" for="not-private">페이지 팔로워공개</label>
+                <input class="form-check-input" type="checkbox" role="switch" id="not-private-update-input" v-model="dataSet.isPrivate">
+                <label class="form-check-label" for="not-private-update-input">페이지 팔로워공개</label>
               </div>
             </div>
           </div>
@@ -54,16 +54,15 @@ export default {
   name: 'UpdateUserInfo',
   data: function () {
     return {
-      newUserInfo: {
-        // 중복검사를 통과한 아이디
-        username: null,
-      },
+      // 선택된 이미지
       selectedImage: null,
+      // 중복검사를 통과한 아이디
+      validUsername: null,
       // 아이디 중복 검사 통과 여부
       isUniqueUsername: false,
       // 입력창에 입력된 아이디
-      // props에서 받은 username이 들어가있다.
       inputUsername: this.username,
+      // 입력창 수정 여부
       isInputUsernameChanged: false,
     }
   },
@@ -72,6 +71,14 @@ export default {
     dataSet: Object,
   },
   methods: {
+    clearInput: function () {
+      this.$emit('clear-data-set')
+      this.selectedImage = null
+      this.validUsername = null
+      this.isUniqueUsername = false
+      this.inputUsername = this.username
+      this.isInputUsernameChanged = false
+    },
     // 클라에서 선택된 파일을 데이터에 저장
     onFileSelected: function (event) {
       this.selectedImage = event.target.files[0]
@@ -103,15 +110,15 @@ export default {
       }
       axios({
         method: 'get',
-        url: `${process.env.VUE_APP_SERVER_URL}/accounts/check-username/${this.inputUsername}`,
+        url: `${process.env.VUE_APP_SERVER_URL}/accounts/check-username/${this.inputUsername}/`,
       })
         .then(res => {
-          // 아이디 중복 검사를 통과하면 newUserInfo에 유저네임 저장
+          // 아이디 중복 검사를 통과하면 validUsername에 유저네임 저장
           this.isUniqueUsername = res.data.isUnique
           if (!this.isUniqueUsername) {
             alert('이미 존재하는 아이디입니다.')
           } else {
-            this.newUserInfo.username = this.inputUsername
+            this.validUsername = this.inputUsername
           }
         })
         .catch(err => {
@@ -188,7 +195,7 @@ export default {
     // 로그인
     login: function () {
       const credentials = {
-        'username': this.newUserInfo.username,
+        'username': this.validUsername,
         'password': this.dataSet.password
       }
       axios({
@@ -200,7 +207,7 @@ export default {
           localStorage.setItem('jwt', res.data.token)
           this.$store.dispatch('getUsername', credentials.username)
           this.$router.push({ name: 'Profile', params: {username:credentials.username} })
-          this.dataSet.password = null
+          this.$emit('clear-data-set')
           alert('회원정보 수정이 완료되었습니다.')
         })
         .catch(err => {
@@ -213,7 +220,7 @@ export default {
       this.isInputUsernameChanged = true
       if (newVal === this.username) {
         this.isUniqueUsername = true
-      } else if (newVal !== this.newUserInfo.username) {
+      } else if (newVal !== this.validUsername) {
         this.isUniqueUsername = false
       }
     },

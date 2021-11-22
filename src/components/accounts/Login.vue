@@ -6,28 +6,28 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button id="login-close-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearInput"></button>
           </div>
           <div class="modal-body">
             <div>
-              <label for="username">사용자 이름</label>
+              <label for="username-login-input">사용자 이름</label>
               <input
                 type="text"
-                id="username"
+                id="username-login-input"
                 v-model="credentials.username"
               >
             </div>
             <div>
-              <label for="password">비밀번호</label>
+              <label for="password-login-input">비밀번호</label>
               <input
                 type="password"
-                id="password"
+                id="password-login-input"
                 v-model="credentials.password"
               >
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="checkValid">Login</button>
+            <button type="button" class="btn btn-primary" @click="checkValid">Login</button>
           </div>
         </div>
       </div>
@@ -49,6 +49,10 @@ export default {
     }
   },
   methods: {
+    clearInput: function () {
+      this.credentials.username = null,
+      this.credentials.password = null
+    },
     checkValid: function () {
       // 빈 값 확인
       if (!(this.credentials.username && this.credentials.password)) {
@@ -84,12 +88,13 @@ export default {
         data: this.credentials
       })
         .then(res => {
+          const loginCloseBtn = document.querySelector('#login-close-btn')
+          loginCloseBtn.click()
           localStorage.setItem('jwt', res.data.token)
           this.$emit('login')
           this.$store.dispatch('getUsername', this.credentials.username)
           this.$router.push({ name: 'Profile', params: {username:this.credentials.username} }),
-          this.credentials.username = null,
-          this.credentials.password = null
+          this.clearInput()
         })
         .catch(err => {
           console.log(err)
