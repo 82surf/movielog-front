@@ -16,15 +16,17 @@
         <option value="created_at_desc">작성일 내림차순</option>
         <option value="rank_desc">별점순</option>
       </select>
-      <review-list-item
-        v-for="review of reviews"
-        :key="review.pk"
-        :review="review"
-        :paramUsername="paramUsername"
-        @delete-review="getReviews"
-        :username="username"
-      >
-      </review-list-item>
+      <div class="review-list">
+        <review-list-item
+          v-for="review of reviews"
+          :key="review.pk"
+          :review="review"
+          :paramUsername="paramUsername"
+          @delete-review="getReviews"
+          :username="username"
+        >
+        </review-list-item>
+      </div>
 
     </div>
   </div>
@@ -127,5 +129,10 @@ export default {
 </script>
 
 <style>
-
+.review-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: minmax(200px, auto);
+  grid-gap: 1rem;
+}
 </style>

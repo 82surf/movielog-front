@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="card" aria-hidden="true" v-if="isLoading">
       <img src="../../assets/profile/default-image.jpg" class="card-img-top">
       <div class="card-body">
