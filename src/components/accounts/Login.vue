@@ -88,13 +88,12 @@ export default {
         data: this.credentials
       })
         .then(res => {
-          const loginCloseBtn = document.querySelector('#login-close-btn')
-          loginCloseBtn.click()
           localStorage.setItem('jwt', res.data.token)
           this.$emit('login')
           this.$store.dispatch('getUsername', this.credentials.username)
-          this.$router.push({ name: 'Profile', params: {username:this.credentials.username} }),
-          this.clearInput()
+          this.$router.push({ name: 'Profile', params: {username:this.credentials.username} })
+          const loginCloseBtn = document.querySelector('#login-close-btn')
+          loginCloseBtn.click()
         })
         .catch(err => {
           console.log(err)
