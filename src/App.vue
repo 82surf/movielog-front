@@ -28,7 +28,9 @@
       </div>
     </nav>
     <router-view/>
+    <!-- 로그인 모달 -->
     <login @login="isLogin=true"></login>
+    <!-- 회원가입 모달 -->
     <signup></signup>
   </div>
 </template>

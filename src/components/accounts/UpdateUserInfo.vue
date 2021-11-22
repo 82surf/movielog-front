@@ -195,7 +195,7 @@ export default {
     // 로그인
     login: function () {
       const credentials = {
-        'username': this.validUsername,
+        'username': this.inputUsername,
         'password': this.dataSet.password
       }
       axios({
@@ -205,8 +205,9 @@ export default {
       })
         .then(res => {
           localStorage.setItem('jwt', res.data.token)
-          this.$store.dispatch('getUsername', credentials.username)
-          this.$router.push({ name: 'Profile', params: {username:credentials.username} })
+          this.$store.dispatch('getUsername', this.inputUsername)
+          this.$router.push({ name: 'Profile', params: {username:this.inputUsername}}).catch(() => {})
+          this.$emit('get-user-info')
           this.$emit('clear-data-set')
           alert('회원정보 수정이 완료되었습니다.')
         })

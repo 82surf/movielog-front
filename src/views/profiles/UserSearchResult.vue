@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <h1>User Search Result</h1>
+  <div
+    class="mx-auto mt-4"
+    style="width: 30rem"
+  >
+    <h3 style="text-align: center">검색 결과</h3>
     <user-search-result-item
       v-for="user in users"
       :key="user.id"
@@ -21,7 +24,6 @@ export default {
   },
   data: function () {
     return {
-      // username: this.$route.params.username,
       users: null,
     }
   },
