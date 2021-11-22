@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="card" aria-hidden="true" v-if="isLoading">
       <img src="../../assets/profile/default-image.jpg" class="card-img-top">
       <div class="card-body">
@@ -25,26 +25,15 @@
       >
       </movie-list-by-likes>
       <hr>
-      <movie-list-by-follows-item
-        v-for="movie in followBasedRecommendedMovie"
-        :key="movie.id"
-        :movie="movie"
-      ></movie-list-by-follows-item>
+      
+      <movie-list-by-follows
+        :movies="followBasedRecommendedMovie"
+      ></movie-list-by-follows>
       <hr>
       
-      <div class="swiper">
-        <div class="swiper-wrapper">
-          <!-- <movie-list-by-following-likes-item
-            v-for="movie in followinglikeBasedRecommendedMovie"
-            :key="movie.id"
-            :movie="movie"
-            ></movie-list-by-following-likes-item> -->
-            <movie-list-by-following-likes-item></movie-list-by-following-likes-item>
-        </div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-scrollbar"></div>
-      </div>
+      <movie-list-by-following-likes
+        :movies="followinglikeBasedRecommendedMovie"
+      ></movie-list-by-following-likes>
       <hr>
 
     </div>
@@ -54,10 +43,9 @@
 <script>
 import axios from 'axios'
 import MovieListByGenres from '@/components/recommend_movie/MovieListByGenres.vue'
-// import MovieListByLikesItem from '@/components/recommend_movie/MovieListByLikesItem.vue'
 import MovieListByLikes from '@/components/recommend_movie/MovieListByLikes.vue'
-import MovieListByFollowsItem from '@/components/recommend_movie/MovieListByFollowsItem.vue'
-import MovieListByFollowingLikesItem from '@/components/recommend_movie/MovieListByFollowingLikesItem.vue'
+import MovieListByFollows from '@/components/recommend_movie/MovieListByFollows.vue'
+import MovieListByFollowingLikes from '@/components/recommend_movie/MovieListByFollowingLikes.vue'
 const API_KEY = '70b5f8cc0018e10bfcf6146a7aaf3dec'
 
 export default {
@@ -73,8 +61,8 @@ export default {
   components: {
     MovieListByGenres,
     MovieListByLikes,
-    MovieListByFollowsItem,
-    MovieListByFollowingLikesItem,
+    MovieListByFollows,
+    MovieListByFollowingLikes,
   },
   methods: {
     setToken: function () {

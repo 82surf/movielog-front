@@ -71,7 +71,7 @@ export default {
   created: function(){
     setTimeout(() => {
       this.isLoading=false
-    }, 20)
+    }, 0)
   },
   computed: {
     

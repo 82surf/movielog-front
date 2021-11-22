@@ -30,24 +30,35 @@
             <div>비공개 계정입니다.</div>
           </div>
           <div v-else>
-            <span class="follower-count">{{ userInfo.followerCount }}</span>
-            <span class="follower-label">followers</span>
-            <span class="following-count">{{ userInfo.followingCount }}</span>
-            <span class="following-label">followings</span>
+            <div class="d-inline" data-bs-toggle="modal" data-bs-target="#FollowerModal">
+              <span class="follower-count">{{ userInfo.followerCount }}</span>
+              <span class="follower-label">followers</span>
+            </div>
+            <div class="d-inline" data-bs-toggle="modal" data-bs-target="#FollowingModal">
+              <span class="following-count">{{ userInfo.followingCount }}</span>
+              <span class="following-label">followings</span>
+            </div>
           </div>
         </div>
       </div>
-
-
     </div>
-
     <hr>
+    <followers-modal
+      :followers="followers"
+      :followingUser="followingUser"
+    ></followers-modal>
+    <followings-modal
+      :followings="followings"
+      :followerUser="followerUser"
+    ></followings-modal>
     <check-password @get-user-info="getUserinfo"></check-password>
   </div>
 </template>
 
 <script>
 import CheckPassword from '@/components/accounts/CheckPassword.vue'
+import FollowersModal from '@/components/profile/FollowersModal.vue'
+import FollowingsModal from '@/components/profile/FollowingsModal.vue'
 
 import axios from 'axios'
 import { mapState } from 'vuex'
@@ -66,10 +77,16 @@ export default {
       isPrivate: null,
       selectedFile: null,
       profile_image_path: null,
+      followers: null,
+      followings: null,
+      followingUser: null,
+      followerUser: null,
     }
   },
   components: {
     CheckPassword,
+    FollowersModal,
+    FollowingsModal
   },
   props: {
     paramUsername: String,
@@ -89,6 +106,15 @@ export default {
         headers: this.setToken()
       })
         .then(res => {
+          this.followingUser = res.data.followings.map(user => {
+            return user.username
+          })
+          this.followerUser = res.data.followings.map(user => {
+            return user.username
+          })
+          this.followingUser.push('a')
+          this.followers = res.data.followers
+          this.followings = res.data.followings
           this.userInfo.username = res.data.username
           this.userInfo.followerCount = res.data.follower_count
           this.userInfo.followingCount = res.data.following_count

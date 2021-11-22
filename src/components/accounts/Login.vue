@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="login">Login</button>
+            <button type="button" class="btn btn-primary" @click="checkValid">Login</button>
           </div>
         </div>
       </div>
