@@ -35,11 +35,7 @@
             </div>
           </div>
           <div class="modal-footer">
-<<<<<<< HEAD
-            <button type="button" class="btn btn-primary" @click="login">Login</button>
-=======
             <button type="button" class="btn btn-primary" @click="checkValid">로그인</button>
->>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
           </div>
         </div>
       </div>

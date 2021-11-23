@@ -9,22 +9,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="$emit('clear-data-set')"></button>
           </div>
           <div class="modal-body">
-<<<<<<< HEAD
-
-
-=======
             <h5>프로필 이미지 변경</h5>
->>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
             <div class="input-group mb-3">
               <!-- <span class="input-group-text" id="file-label">Profile Image</span> -->
               <input type="file" class="form-control" aria-describedby="file-label" @change="onFileSelected">
             </div>
-<<<<<<< HEAD
-
-=======
             <hr>
             <h5>회원 정보 수정</h5>
->>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
             <div>
               <p v-if="!isUniqueUsername && isInputUsernameChanged">아이디 중복 체크 필요</p>
               <p v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</p>

@@ -2,29 +2,6 @@
   <div class="mx-auto" style="width: 300px; height: 428px">
 
     <!-- 리뷰 카드 -->
-<<<<<<< HEAD
-    <div v-show="!isLoading">
-      <div v-if="!review.is_private||paramUsername===username">
-        <div class="review-container" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
-          <div class="poster-container">
-            <img
-              class="review-poster"
-              v-if="review.thumbnail_path!=='image'"
-              :src="`https://image.tmdb.org/t/p/original/${review.thumbnail_path}`"
-              alt="profile img"
-            >
-            <div v-else class="default-poster"></div>
-          </div>
-          <div class="month-n-date-container">
-            <span class="review-month">{{ engMonth }}  </span>
-            <span class="review-date">{{ date }}</span>
-          </div>
-          <p class="review-year">{{ year }}</p>
-          <div class="content-container">
-            <p class="review-movie-title">{{ review.movie_title }}</p>
-            <p class="review-oneline">{{ review.oneline_review }}</p>
-          </div>
-=======
     <div v-if="!review.is_private||paramUsername===username">
       <div class="review-container" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
         <div class="poster-container">
@@ -44,7 +21,6 @@
         <div class="content-container">
           <p class="review-movie-title">{{ review.movie_title }}</p>
           <p class="review-oneline">{{ review.oneline_review }}</p>
->>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
         </div>
       </div>
 
@@ -87,14 +63,6 @@ export default {
       this.$emit('delete-review')
     }
   },
-<<<<<<< HEAD
-  created: function(){
-    setTimeout(() => {
-      this.isLoading=false
-    }, 2000)
-  },
-=======
->>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
   computed: {
     engMonth: function () {
       const encode = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
