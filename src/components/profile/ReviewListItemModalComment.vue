@@ -1,12 +1,16 @@
 <template>
   <div class="card card-body my-3">
-    <div>
-    <span>{{ comment.user.username }}</span>
-    <span>{{ comment.content }}</span>
-    <div class="text-end">
-      <button @click="likeComment" :class="{'btn fas fa-heart fs-4 text-danger': likes, 'btn far fa-heart fs-4' : !likes } "><span>{{ comment.like_count }}</span></button>
-      <button v-if="username===comment.user.username" @click="deleteComment" class="text-end btn-close"></button>
-    </div>
+    <div class="d-flex justify-content-between">
+      <div>
+        <span class="comment-username me-2">{{ comment.user.username }}</span>
+        <span class="comment-content">{{ comment.content }}</span>
+      </div>
+      <div class="btn-container">
+        <span @click="likeComment" v-show="!likes" class="material-icons like-btn like-btn__inactive me-2">favorite</span>
+        <span @click="likeComment" v-show="likes" class="material-icons like-btn like-btn__active me-2">favorite</span>
+        <span class="me-2">{{ comment.like_count }} Likes</span>
+        <button v-if="username===comment.user.username" @click="deleteComment" class="text-end btn-close"></button>
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +77,24 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.btn-container {
+  display: flex;
+  align-items: center;
+}
+.comment-username {
+  font-family: 'Reem Kufi', sans-serif;
+}
+.comment-content {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.like-btn {
+  font-size: 1rem;
+}
+.like-btn__active {
+  color: red;
+}
+.like-btn__inactive {
+  color: gray;
+}
 </style>

@@ -40,6 +40,7 @@
             </div>
           </div>
         </div>
+        <button class="btn btn-outline-secondary btn-sm mt-2" v-if="username===paramUsername" @click="goToReviewForm">리뷰 작성하기</button>
       </div>
     </div>
     <hr>
@@ -92,6 +93,9 @@ export default {
     paramUsername: String,
   },
   methods: {
+    goToReviewForm: function () {
+      this.$router.push({ name: 'MovieSearch' })
+    },
     setToken: function () {
       const token = localStorage.getItem('jwt')
       const config = {
@@ -182,7 +186,7 @@ export default {
 }
 .user-info .profile-img {
   width: 150px;
-  border-radius: 16px;
+  border-radius: 20px;
 }
 .user-info .user-info-container {
   margin-left: 24px;

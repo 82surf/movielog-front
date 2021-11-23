@@ -1,13 +1,7 @@
 <template>
   <div>
-    <!-- <div v-if="isLoading">
-      <div class="spinner-border m-5" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div> -->
-    <div>
-      <button v-if="username===paramUsername" @click="goToReviewForm">리뷰 작성하기</button>
-      <select v-model="status">
+    <div class="d-flex justify-content-end my-4">
+      <select class="btn" aria-labelledby="reviewListSortBtn" v-model="status">
         <option value="watched_at_desc">관람일 내림차순</option>
         <option value="watched_at_asc">관람일 오름차순</option>
         <option value="like_count">좋아요 많은순</option>
@@ -16,18 +10,18 @@
         <option value="created_at_desc">작성일 내림차순</option>
         <option value="rank_desc">별점순</option>
       </select>
-      <div class="review-list">
-        <review-list-item
-          v-for="review of reviews"
-          :key="review.pk"
-          :review="review"
-          :paramUsername="paramUsername"
-          @delete-review="getReviews"
-          :username="username"
-        >
-        </review-list-item>
-      </div>
+    </div>
 
+    <div class="review-list mb-5">
+      <review-list-item
+        v-for="review of reviews"
+        :key="review.pk"
+        :review="review"
+        :paramUsername="paramUsername"
+        @delete-review="getReviews"
+        :username="username"
+      >
+      </review-list-item>
     </div>
   </div>
 </template>
@@ -91,9 +85,6 @@ export default {
           console.log(err)
         })
     },
-    goToReviewForm: function () {
-      this.$router.push({ name: 'MovieSearch' })
-    },
   },
   created: function () {
     this.getReviews()
@@ -128,11 +119,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .review-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   grid-auto-rows: minmax(200px, auto);
-  grid-gap: 1rem;
+  grid-gap: 2rem;
+}
+.crete-review-btn {
+  right: 0;
+  bottom: 0;
 }
 </style>
