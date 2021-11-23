@@ -9,10 +9,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="$emit('clear-data-set')"></button>
           </div>
           <div class="modal-body">
+
+
             <div class="input-group mb-3">
               <span class="input-group-text" id="file-label">Profile Image</span>
               <input type="file" class="form-control" aria-describedby="file-label" @change="onFileSelected">
             </div>
+
             <div>
               <p v-if="!isUniqueUsername && isInputUsernameChanged">아이디 중복 체크 필요</p>
               <p v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</p>
@@ -235,5 +238,16 @@ export default {
 </script>
 
 <style>
+.file_input_textbox {
+   float:left; height:29px; 
+   } 
+.file_input_div { 
+  position:relative; width:80px; height:36px; overflow:hidden; 
+  } 
+.file_input_img_btn {
+  padding:0 0 0 5px; 
+  } .file_input_hidden {
+  font-size:29px; position:absolute; right:0px; top:0px; opacity:0; filter: alpha(opacity=0); -ms-filter: alpha(opacity=0); cursor:pointer; 
+}
 
 </style>

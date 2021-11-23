@@ -1,22 +1,22 @@
 <template>
   <div>
-    <movie-list-by-follows-item-modal 
-      :movie-data="movieData"
-      :review-data="movie"
+    <movie-list-by-random-item-modal 
+      :movie-data="movie"
       :video-key="videoKey"
-    ></movie-list-by-follows-item-modal>
+    ></movie-list-by-random-item-modal>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import _ from 'lodash'
-import MovieListByFollowsItemModal from '@/components/recommend_movie/MovieListByFollowsItemModal.vue'
+import MovieListByRandomItemModal from '@/components/recommend_movie/MovieListByRandomItemModal.vue'
 
+const API_KEY = '70b5f8cc0018e10bfcf6146a7aaf3dec'
 export default {
-  name: 'MovieListByFollowsItem',
+  name: 'MovieListByRandomItem',
   components : {
-    MovieListByFollowsItemModal,
+    MovieListByRandomItemModal,
   },
   data : function () {
     return {
@@ -31,18 +31,19 @@ export default {
     atCreated: function() {
       axios({
         method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${this.movie.tmdb_movie_id}?language=ko-KR&api_key=70b5f8cc0018e10bfcf6146a7aaf3dec`,
+        url: `https://api.themoviedb.org/3/movie/${this.movie.id}?language=ko-KR&api_key=70b5f8cc0018e10bfcf6146a7aaf3dec`,
       })
         .then(res => {
           this.movieData = res.data
           axios({
             method: 'get',
-            url: `https://api.themoviedb.org/3/movie/${res.data.id}/videos?api_key=${process.env.VUE_APP_API_KEY}&language=ko-KR`,
+            url: `https://api.themoviedb.org/3/movie/${res.data.id}/videos?api_key=${API_KEY}&language=ko-KR`,
           })
             .then(response => {
               if (response.data.results.length < 1){
                 this.videoKey = 'nothing'
                 } else{
+                // this.videoKey = response.data.results[0].key
                 this.videoKey = _.sample(response.data.results).key
               }
             })
@@ -54,10 +55,11 @@ export default {
           console.log(err)
         })
     },
+    
   },
   created: function (){
     this.atCreated()
-  }
+  },
 }
 
 </script>

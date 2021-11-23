@@ -1,29 +1,14 @@
 <template>
   <div>
-    <div class="modal fade" :id="`FollowModal${reviewData.id}`" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal fade" :id="`RandomModal${movieData.id}`" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{ reviewData.movie_title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title" id="exampleModalLabel">{{ movieData.title }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="onCloseBtn"></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">한줄평: {{ reviewData.oneline_review }}</label>
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">명대사: {{ reviewData.quote }}</label>
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">관람일: {{ reviewData.watched_at }}</label>
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">평점: {{ reviewData.rank }}</label>
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">내용: {{ reviewData.content }}</label>
-            </div>
-            <div class="collapse multi-collapse mb-3" :id="`follow-modal-video-collapse-${reviewData.id}`">
+            <div class="collapse multi-collapse mb-3" :id="`video-collapse-${movieData.id}`">
               <hr>
               <div v-html="inHtml"></div>
             </div>
@@ -32,10 +17,11 @@
           <div class="modal-footer">
             <button 
               class="btn btn-primary" 
-              :id="`follow-modal-collapse-btn-${reviewData.id}`" 
+              :id="`collapse-btn-${movieData.id}`"
               type="button" 
               data-bs-toggle="collapse" 
-              :data-bs-target="`#follow-modal-video-collapse-${reviewData.id}`" 
+              :data-bs-target="`#video-collapse-${movieData.id}`" 
+              aria-expanded="true" 
               @click="onCollapseBtn">
               트레일러보기
             </button>
@@ -48,7 +34,7 @@
 
 <script>
 export default {
-  name: 'MovieListByFollowsItemModal',
+  name: 'MovieListByRandomItemModal',
   data: function() {
     return {
       isPlay: false,
@@ -57,14 +43,13 @@ export default {
   },
   props: {
     movieData: Object,
-    reviewData: Object,
     videoKey: String,
   },
   methods: {
     onCloseBtn: function() {
       if(this.videoKey !=='nothing'){
         if (this.isPlay){
-          const collapseBtn = document.querySelector(`#follow-modal-collapse-btn-${this.reviewData.id}`)
+          const collapseBtn = document.querySelector(`#collapse-btn-${this.movieData.id}`)
           collapseBtn.click()
         }
         this.inHtml = '<div>  </div>'

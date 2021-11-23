@@ -18,7 +18,7 @@
     </div>
 
     <!-- 리뷰 카드 -->
-    <div v-else>
+    <div v-show="!isLoading">
       <div v-if="!review.is_private||paramUsername===username">
         <div class="review-container" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
           <div class="poster-container">
@@ -85,7 +85,7 @@ export default {
   created: function(){
     setTimeout(() => {
       this.isLoading=false
-    }, 0)
+    }, 2000)
   },
   computed: {
     engMonth: function () {

@@ -17,9 +17,11 @@
       </div>
     </div>
 
-
     <div v-else>
-      <movie-list-by-genres></movie-list-by-genres>
+      <movie-list-by-random
+        :movies="randomRecommendedMovie"
+      ></movie-list-by-random>
+      
       <movie-list-by-likes
         :movies="likeBasedRecommendedMovie"
       >
@@ -42,10 +44,11 @@
 
 <script>
 import axios from 'axios'
-import MovieListByGenres from '@/components/recommend_movie/MovieListByGenres.vue'
+import _ from 'lodash'
 import MovieListByLikes from '@/components/recommend_movie/MovieListByLikes.vue'
 import MovieListByFollows from '@/components/recommend_movie/MovieListByFollows.vue'
 import MovieListByFollowingLikes from '@/components/recommend_movie/MovieListByFollowingLikes.vue'
+import MovieListByRandom from '@/components/recommend_movie/MovieListByRandom.vue'
 const API_KEY = '70b5f8cc0018e10bfcf6146a7aaf3dec'
 
 export default {
@@ -55,11 +58,12 @@ export default {
       likeBasedRecommendedMovie: null,
       followBasedRecommendedMovie: null,
       followinglikeBasedRecommendedMovie: null,
+      randomRecommendedMovie: null,
       isLoading: true,
     }
   },
   components: {
-    MovieListByGenres,
+    MovieListByRandom,
     MovieListByLikes,
     MovieListByFollows,
     MovieListByFollowingLikes,
@@ -111,13 +115,15 @@ export default {
           console.log(err)
         })
     },
-    onclickRecommend: function() {
+    getMovieByRandom: function() {
+      const randomPage = _.sample(_.range(1,2))
+
       axios({
         method: 'get',
-        url: `https://api.themoviedb.org/3/movie/{movie.id}/similar?api_key=${API_KEY}&language=ko-KR&`
+        url: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&region=KR&page=${randomPage}`
       })
         .then(res => {
-          console.log(res)
+          this.randomRecommendedMovie = res.data.results//.slice(0,1)
         })
         .catch(err => {
           console.log(err)
@@ -128,6 +134,8 @@ export default {
     this.getMovieByLikes()
     this.getMovieByFollows()
     this.getMovieByFollowLikes()
+    this.getMovieByRandom()
+    // this.onclickRecommend()
     setTimeout(() => {
       this.isLoading=false
     },0)
