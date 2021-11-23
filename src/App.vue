@@ -4,7 +4,7 @@
       <div class="container-fluid d-flex justify-content-between">
         <router-link class="navbar-brand" :to="{ name: 'Landing'}">movielog</router-link>
         <!-- 유저 검색창 -->
-        <form class="d-flex mt-2 mt-lg-0 mx-auto" @submit.prevent v-if="username">
+        <form class="d-none d-md-block d-flex mt-2 mt-lg-0 mx-auto" @submit.prevent v-if="username">
           <input v-model="inputUsername" @keyup.enter="searchUser" class="form-control me-2" type="search" placeholder="친구 검색하기" aria-label="Search">
         </form>
         <ul v-if="isLogin" class="nav">
@@ -85,5 +85,11 @@ export default {
 </script>
 
 <style>
-
+#app {
+  background-color: #fafafa;
+}
+.navbar-brand {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 1.2rem;
+}
 </style>
