@@ -1,7 +1,10 @@
 <template>
   <div>
-    <input v-model="keyword" @keyup.enter="inputChange" type="text">
-    <button @click="inputChange">검색</button>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default">영화제목</span>
+      <input type="text" v-model="keyword" class="form-control" aria-describedby="inputGroup-sizing-default" @keyup.enter="inputChange">
+      <button @click="inputChange" class="btn btn-outline-primary">검색</button>
+    </div>
   </div>
 </template>
 

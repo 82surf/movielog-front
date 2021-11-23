@@ -12,6 +12,7 @@
               v-for="following in followings"
               :key="following.username"
               :following="following"
+              :followerUser="followerUser"
               data-bs-dismiss="modal"
             >
             </following-modal-item>

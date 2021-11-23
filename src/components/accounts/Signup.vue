@@ -9,48 +9,58 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearInput"></button>
           </div>
           <div class="modal-body">
-            <div>
+            <div class="form-floating mb-3">
+              <input 
+                type="text" 
+                class="form-control" 
+                id="name-signup-input" 
+                v-model="credentials.name"
+                placeholder="name"
+              >
               <label for="name-signup-input">이름</label>
-              <input
-              type="text"
-              id="name-signup-input"
-              v-model="credentials.name"
-              >
             </div>
-            <div>
+            <div class="form-floating mb-3">
+              <input 
+                type="text" 
+                class="form-control" 
+                id="email-signup-input" 
+                v-model="credentials.email"
+                placeholder="email"
+              >
               <label for="email-signup-input">이메일</label>
-              <input
-              type="text"
-              id="email-signup-input"
-              v-model="credentials.email"
-              >
             </div>
-            <div>
-              <p v-if="!isUniqueUsername">아이디 중복 체크 필요</p>
-              <p v-else>아이디 중복 체크 완료</p>
-              <label for="username-signup-input">아이디</label>
-              <input
-                type="text"
-                id="username-signup-input"
+            <div class="form-floating mb-3">
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username-signup-input" 
                 v-model="inputUsername"
+                placeholder="id"
               >
-              <button @click="usernameValid">아이디 중복 체크</button>
+              <label for="username-signup-input">아이디</label>
+              <button class="btn btn-outline-warning" @click="usernameValid">중복 체크</button>
             </div>
-            <div>
-              <label for="password-signup-input">비밀번호</label>
-              <input
-                type="password"
-                id="password-signup-input"
+            <p v-if="!isUniqueUsername">아이디 중복 체크 필요</p>
+            <p v-else>아이디 중복 체크 완료</p>
+            <div class="form-floating mb-3">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password-signup-input" 
                 v-model="credentials.password"
+                placeholder="pw"
               >
+              <label for="password-signup-input">비밀번호</label>
             </div>
-            <div>
-              <label for="password-confirmation-signup-input">비밀번호 확인</label>
-              <input
-                type="password"
-                id="password-confirmation-signup-input"
+            <div class="form-floating mb-3">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password-confimation-signup-input" 
                 v-model="credentials.passwordConfirmation"
+                placeholder="pwconfirm"
               >
+              <label for="password-confirmation-signup-input">비밀번호 확인</label>
             </div>
           </div>
           <div class="modal-footer">
@@ -66,7 +76,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'Singup',
+  name: 'Signup',
   data: function () {
     return {
       credentials: {

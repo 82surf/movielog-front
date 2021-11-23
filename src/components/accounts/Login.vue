@@ -10,20 +10,28 @@
           </div>
           <div class="modal-body">
             <div>
-              <label for="username-login-input">사용자 이름</label>
-              <input
-                type="text"
-                id="username-login-input"
-                v-model="credentials.username"
-              >
+              <div class="form-floating mb-3">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="username-login-input" 
+                  v-model="credentials.username"
+                  placeholder="id"
+                >
+                <label for="username-login-label">ID</label>
+              </div>
             </div>
             <div>
-              <label for="password-login-input">비밀번호</label>
-              <input
-                type="password"
-                id="password-login-input"
-                v-model="credentials.password"
-              >
+              <div class="form-floating mb-3">
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="password-login-input" 
+                  v-model="credentials.password"
+                  placeholder="pw"
+                >
+                <label for="password-login-input">PW</label>
+              </div>
             </div>
           </div>
           <div class="modal-footer">

@@ -88,21 +88,25 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <span>한줄평:</span>
                 <input type="text" v-model="review.oneline_review">
+              </div> -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="oneline-review-label">한줄평</span>
+                <input type="text" class="form-control" placeholder="한줄평" v-model="review.oneline_review" aria-describedby="online-review-label">
               </div>
-              <div class="mb-3">
-                <span>명대사:</span>
-                <input type="text" v-model="review.quote">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="quote-label">명대사</span>
+                <input type="text" class="form-control" placeholder="명대사" v-model="review.quote" aria-describedby="quote-label">
               </div>
-              <div class="mb-3">
-                <span>관람일:</span>
-                <input type="date" v-model="watched_at">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="watched-at-label">관람일</span>
+                <input type="date" class="form-control" placeholder="관람일" v-model="watched_at" aria-describedby="watched-at-label">
               </div>
-              <div class="mb-3">
-                <span>내용: </span>
-                <textarea v-model="review.content" class="form-control"></textarea>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="content-label">후기</span>
+                <textarea class="form-control" placeholder="후기" v-model="review.content" aria-describedby="content-label"></textarea>
               </div>
           </div>
           <div class="modal-footer">

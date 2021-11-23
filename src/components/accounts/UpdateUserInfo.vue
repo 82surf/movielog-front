@@ -9,21 +9,26 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="$emit('clear-data-set')"></button>
           </div>
           <div class="modal-body">
-            <input type="file" @change="onFileSelected">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="file-label">Profile Image</span>
+              <input type="file" class="form-control" aria-describedby="file-label" @change="onFileSelected">
+            </div>
             <div>
               <p v-if="!isUniqueUsername && isInputUsernameChanged">아이디 중복 체크 필요</p>
               <p v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</p>
-              <label for="username-update-input">아이디</label>
-              <input v-model="inputUsername" type="text" id="username-update-input">
-              <button v-show="isInputUsernameChanged" @click="usernameValid">아이디 중복 확인</button>
+              <div class="form-floating">
+                  <input type="text" class="form-control" id="username-label" placeholder="name@example.com" v-model="inputUsername">
+                  <label for="username-label">ID</label>
+                  <button v-show="isInputUsernameChanged" @click="usernameValid">아이디 중복 확인</button>
+              </div>
             </div>
-            <div>
-              <label for="email-update-input">이메일</label>
-              <input v-model="dataSet.email" type="text" id="email-update-input">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="email-label" placeholder="name@example.com" v-model="dataSet.email">
+              <label for="email-label">Email</label>
             </div>
-            <div>
-              <label for="name-update-input">이름</label>
-              <input v-model="dataSet.name" type="text" id="name-update-input">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="name-label" placeholder="name@example.com" v-model="dataSet.name">
+              <label for="name-label">Name</label>
             </div>
             <div>
               <p>프로필 공개 여부</p>
