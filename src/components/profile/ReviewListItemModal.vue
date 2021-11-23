@@ -1,61 +1,83 @@
 <template>
   <div>
     <div class="modal fade" :id="`Modal${review.pk}`" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
-      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
+          <!-- 리뷰 상세 모달 헤더 -->
           <div class="modal-header justify-content-between">
             <h5 class="modal-title" id="exampleModalLabel">{{ review.movie_title }}</h5>
-            <div class="star-ratings mx-5">
-              <div 
-                class="star-ratings-fill space-x-2"
-                :style="{ width: ratingToPercent() + '%' }"
-              >
-                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            <div class="d-flex align-items-center">
+              <div>관람일: {{ review.watched_at }}</div>
+              <div v-if="paramUsername===username">
+                <button type="button" class="btn btn-outline-secondary btn-sm ms-3" :data-bs-target="`#Modal${review.pk}update`" data-bs-toggle="modal" >수정하기</button>
               </div>
-              <div class="star-ratings-base space-x-2">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-              </div>
+              <button type="button" :id="`close-review-modal-${review.pk}`" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div v-if="paramUsername===username">
-              <button type="button" class="btn btn-secondary" :data-bs-target="`#Modal${review.pk}update`" data-bs-toggle="modal" >수정하기</button>
-            </div>
-            <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          <!-- 리뷰 상세 모달 바디 -->
           <div class="modal-body">
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">한줄평: {{ review.oneline_review }}</label>
+            <!-- 한줄평 -->
+            <div class="mb-3 d-flex flex-column align-items-center">
+              <i class="fas fa-quote-left" style="color: gray;"></i>
+              <label for="message-text" class="col-form-label my-4 text-center" style="width: 550px; font-size: 18px">{{ review.oneline_review }}</label>
+              <i class="fas fa-quote-right" style="color: gray;"></i>
+              <!-- 별점 -->
+              <div class="star-ratings mt-4">
+                <div
+                  class="star-ratings-fill"
+                  :style="{ width: ratingToPercent() + '%' }"
+                >
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                </div>
+                <div class="star-ratings-base">
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                  <span class="material-icons-round">grade</span>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">명대사: {{ review.quote }}</label>
+            </div>
+
+            <!-- 리뷰 본문 -->
+            <div class="card">
+              <div class="card-body">
+                <!-- 리뷰 좋아요 버튼 -->
+                <div class="d-flex align-items-center mb-2">
+                  <i @click="likeReview" v-show="likes" class="material-icons like-btn like-btn__inactive me-2">favorite</i>
+                  <i @click="likeReview" v-show="!likes" class="material-icons like-btn like-btn__active me-2">favorite</i>
+                  <span>{{ review.like_count }} Likes</span>
+                </div>
+                <p class="card-text">{{ review.content }}</p>
               </div>
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">관람일: {{ review.watched_at }}</label>
-              </div>
-              
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">내용: {{ review.content }}</label>
-              </div>
+            </div>
             <div class="collapse multi-collapse mb-3" id="commentCollapse">
-              <hr>
-              <input type="text" v-model.trim="commentInput" @keyup.enter="createComment">
-              <review-list-item-modal-comment 
+              <hr class="my-4">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="review-comment-input">댓글 작성</span>
+                <input type="text" v-model.trim="commentInput" @keyup.enter="createComment" class="form-control" placeholder="댓글을 작성해주세요." aria-label="Username" aria-describedby="review-comment-input">
+              </div>
+              <review-list-item-modal-comment
                 v-for="comment in review.comment_set"
                 :key="comment.id"
                 :comment="comment"
                 :username="username"
                 @delete-comment="deleteComment"
+                @go-to-profile="closeModal"
               >
               </review-list-item-modal-comment>
             </div>
           </div>
-            
-          <div class="modal-footer justify-content-between">
-            <p>
-            <button @click="likeReview" :class="[{'btn fas fa-heart fs-3 text-danger': likes, 'btn far fa-heart fs-3' : !likes, },'text-nowrap']"></button>
-              <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapse" aria-expanded="false" aria-controls="collapseExample">
-                댓글
+
+          <!-- 리뷰 상세 모달 푸터 -->
+          <div class="modal-footer">
+              <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapse" aria-expanded="false" aria-controls="collapseExample">
+                댓글 보기
               </button>
-            </p>
           </div>
         </div>
       </div>
@@ -63,54 +85,55 @@
 
 
     <div class="modal fade" :id="`Modal${review.pk}update`" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header">
+          <!-- 리뷰 수정 모달 헤더 -->
+          <div class="modal-header justify-content-between">
             <h5 class="modal-title" id="exampleModalLabel">{{ review.movie_title }}</h5>
-            <div class="star-rating space-x-4 mx-auto">
-              <input type="radio" :id="`5-stars${review.pk}`" :name="`rating${review.pk}`" value="5" v-model="review.rank">
-              <label :for="`5-stars${review.pk}`" class="star pr-4 fs-3">★</label>
-              <input type="radio" :id="`4-stars${review.pk}`" :name="`rating${review.pk}`" value="4" v-model="review.rank">
-              <label :for="`4-stars${review.pk}`" class="star fs-3">★</label>
-              <input type="radio" :id="`3-stars${review.pk}`" :name="`rating${review.pk}`" value="3" v-model="review.rank">
-              <label :for="`3-stars${review.pk}`" class="star fs-3">★</label>
-              <input type="radio" :id="`2-stars${review.pk}`" :name="`rating${review.pk}`" value="2" v-model="review.rank">
-              <label :for="`2-stars${review.pk}`" class="star fs-3">★</label>
-              <input type="radio" :id="`1-star${review.pk}`" :name="`rating${review.pk}`" value="1" v-model="review.rank">
-              <label :for="`1-star${review.pk}`" class="star fs-3">★</label>
+            <div class="d-flex align-items-center">
+              <button type="button" class="btn btn-secondary btn-sm" :data-bs-target="`#Modal${review.pk}`" data-bs-toggle="modal" @click="updateReview">수정완료</button>
+              <button type="button" class="btn btn-danger btn-sm ms-3" :data-bs-target="`#Modal${review.pk}delete`"  data-bs-toggle="modal">일기삭제</button>
+              <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" :id="`not-private-update-input${review.pk}`" v-model="isPrivate">
-              <label class="form-check-label" :for="`not-private-update-input${review.pk}`">팔로워에게만 공개</label>
-            </div>
-            <button type="button" class="btn btn-secondary" :data-bs-target="`#Modal${review.pk}`" data-bs-toggle="modal" @click="updateReview">수정완료</button>
-            <button type="button" class="btn btn-danger" :data-bs-target="`#Modal${review.pk}delete`"  data-bs-toggle="modal">일기삭제</button>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+
+          <!-- 리뷰 수정 모달 바디 -->
           <div class="modal-body">
-              <!-- <div class="mb-3">
-                <span>한줄평:</span>
-                <input type="text" v-model="review.oneline_review">
-              </div> -->
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="oneline-review-label">한줄평</span>
-                <input type="text" class="form-control" placeholder="한줄평" v-model="review.oneline_review" aria-describedby="online-review-label">
+              <!-- 별점 수정 -->
+              <div class="star-rating space-x-4 mx-auto mb-3">
+                <input type="radio" :id="`5-stars${review.pk}`" :name="`rating${review.pk}`" value="5" v-model="review.rank">
+                <label :for="`5-stars${review.pk}`" class="star pr-4 material-icons-round">grade</label>
+                <input type="radio" :id="`4-stars${review.pk}`" :name="`rating${review.pk}`" value="4" v-model="review.rank">
+                <label :for="`4-stars${review.pk}`" class="star material-icons-round">grade</label>
+                <input type="radio" :id="`3-stars${review.pk}`" :name="`rating${review.pk}`" value="3" v-model="review.rank">
+                <label :for="`3-stars${review.pk}`" class="star material-icons-round">grade</label>
+                <input type="radio" :id="`2-stars${review.pk}`" :name="`rating${review.pk}`" value="2" v-model="review.rank">
+                <label :for="`2-stars${review.pk}`" class="star material-icons-round">grade</label>
+                <input type="radio" :id="`1-star${review.pk}`" :name="`rating${review.pk}`" value="1" v-model="review.rank">
+                <label :for="`1-star${review.pk}`" class="star material-icons-round">grade</label>
               </div>
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="quote-label">명대사</span>
-                <input type="text" class="form-control" placeholder="명대사" v-model="review.quote" aria-describedby="quote-label">
-              </div>
+              <!-- 관람일 수정 -->
               <div class="input-group mb-3">
                 <span class="input-group-text" id="watched-at-label">관람일</span>
                 <input type="date" class="form-control" placeholder="관람일" v-model="watched_at" aria-describedby="watched-at-label">
               </div>
+              <!-- 한줄평 수정 -->
               <div class="input-group mb-3">
-                <span class="input-group-text" id="content-label">후기</span>
-                <textarea class="form-control" placeholder="후기" v-model="review.content" aria-describedby="content-label"></textarea>
+                <span class="input-group-text" id="oneline-review-label">한줄평</span>
+                <textarea type="text" class="form-control" placeholder="한줄평" v-model="review.oneline_review" aria-describedby="online-review-label" rows="3"></textarea>
+              </div>
+              <!-- 영화 후기 수정 -->
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="content-label">영화 후기</span>
+                <textarea class="form-control" placeholder="후기" v-model="review.content" aria-describedby="content-label" rows="5"></textarea>
+              </div>
+              <!-- 비공개 여부 설정 -->
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" :id="`not-private-update-input${review.pk}`" v-model="isPrivate">
+                <label class="form-check-label" :for="`not-private-update-input${review.pk}`">팔로워에게만 공개</label>
               </div>
           </div>
-          <div class="modal-footer">
-          </div>
+          <div class="modal-footer"></div>
         </div>
       </div>
     </div>
@@ -155,7 +178,12 @@ export default {
     }
   },
   methods: {
-    ratingToPercent:function() {
+    closeModal: function (commentUsername) {
+      const closeBtn = document.querySelector(`#close-review-modal-${this.review.pk}`)
+      closeBtn.click()
+      this.$router.push({ name: 'Profile', params: { username: commentUsername }})
+    },
+    ratingToPercent: function() {
       const score = this.review.rank * 20;
       return score + 1.5;
     },
@@ -275,60 +303,64 @@ window.addEventListener('popstate', function () {
 .updatebtn {
   margin-left: 450px;
 }
+.like-btn {
+  font-size: 1rem;
+}
+.like-btn.like-btn__inactive {
+  color: red;
+}
+.like-btn.like-btn__active {
+  color: gray;
+}
 .star-ratings {
-  color: #aaa9a9; 
+  color: #aaa9a9;
   position: relative;
   unicode-bidi: bidi-override;
   width: max-content;
-  font-size: 2.25rem;
-  line-height: 2.5rem;
   -webkit-text-fill-color: transparent; /* Will override color (regardless of order)*/
   -webkit-text-stroke-width: 1.3px;
-  -webkit-text-stroke-color: #2b2a29;
+  /* -webkit-text-stroke-color: #2b2a29; */
 }
- 
- .star-ratings-fill {
-  color: #fff58c;
+.star-ratings .material-icons-round {
+  font-size: 2rem;
+}
+.star-ratings-fill {
+  color: gold;
   padding: 0;
   position: absolute;
   z-index: 1;
   display: flex;
-  top: 0;
-  left: 0;
   overflow: hidden;
   -webkit-text-fill-color: gold;
 }
- 
- .star-ratings-base {
+.star-ratings-base {
   z-index: 0;
   padding: 0;
 }
+
 .star-rating {
 display: flex;
 flex-direction: row-reverse;
-font-size: 2.25rem;
-line-height: 2.5rem;
 justify-content: space-around;
 padding: 0 0.2em;
 text-align: center;
 width: 5em;
 }
-
+.star-rating .star {
+  font-size: 2rem;
+}
 .star-rating input {
 display: none;
 }
-
 .star-rating label {
 -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
 -webkit-text-stroke-width: 1.3px;
 -webkit-text-stroke-color: #2b2a29;
 cursor: pointer;
 }
-
 .star-rating :checked ~ label {
 -webkit-text-fill-color: gold;
 }
-
 .star-rating label:hover,
 .star-rating label:hover ~ label {
 -webkit-text-fill-color: #fff58c;

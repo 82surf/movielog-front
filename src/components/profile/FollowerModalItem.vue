@@ -6,15 +6,14 @@
         class="list-group-item list-group-item-action"
         @click="goToProfile"
       >
-      <div class="d-flex w-100 justify-content-between align-items-center">
-      <h5>{{ follower.username }}</h5>
-      <span v-if="isF4F">맞팔</span>
-      <div>
-        <span>follower: {{ follower.follower_count }}  </span>
-        <span>following: {{ follower.following_count }}</span>
-
-      </div>
-      </div>
+        <div class="d-flex justify-content-between align-items-baseline">
+          <h5 class="follower-username mt-2">{{ follower.username }}</h5>
+          <div>
+            <span v-if="isF4F">맞팔로우 중입니다.</span>
+            <!-- <span>follower: {{ follower.follower_count }}  </span>
+            <span>following: {{ follower.following_count }}</span> -->
+          </div>
+        </div>
       </a>
     </div>
   </div>
@@ -48,6 +47,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.follower-username {
+  font-family: 'Reem Kufi', sans-serif;
+}
 </style>

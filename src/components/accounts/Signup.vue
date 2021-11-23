@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="signupModalLabel">Sign up</h5>
+            <h5 class="modal-title" id="signupModalLabel">회원가입</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearInput"></button>
           </div>
           <div class="modal-body">
@@ -29,19 +29,21 @@
               >
               <label for="email-signup-input">이메일</label>
             </div>
-            <div class="form-floating mb-3">
-              <input 
-                type="text" 
-                class="form-control" 
-                id="username-signup-input" 
+            <div class="form-floating mb-1">
+              <input
+                type="text"
+                class="form-control"
+                id="username-signup-input"
                 v-model="inputUsername"
                 placeholder="id"
               >
               <label for="username-signup-input">아이디</label>
-              <button class="btn btn-outline-warning" @click="usernameValid">중복 체크</button>
             </div>
-            <p v-if="!isUniqueUsername">아이디 중복 체크 필요</p>
-            <p v-else>아이디 중복 체크 완료</p>
+            <div class="d-flex justify-content-start align-items-center mb-3">
+              <button class="btn btn-outline-warning btn-sm me-2" @click="usernameValid">중복 체크</button>
+              <div v-if="!isUniqueUsername" style="color: red; font-size: 14px;">아이디 중복 체크 필요</div>
+              <div v-else style="font-size: 14px">아이디 중복 체크 완료</div>
+            </div>
             <div class="form-floating mb-3">
               <input 
                 type="password" 
@@ -64,7 +66,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="checkValid">Sign up</button>
+            <button type="button" class="btn btn-primary" @click="checkValid">작성 완료</button>
           </div>
         </div>
       </div>

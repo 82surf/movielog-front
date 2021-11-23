@@ -1,44 +1,26 @@
 <template>
   <div class="mx-auto" style="width: 300px; height: 428px">
-    <!-- 로딩 화면 -->
-    <div class="card" aria-hidden="true" v-if="isLoading">
-      <div class="card-body">
-        <h5 class="card-title placeholder-glow">
-          <span class="placeholder col-6"></span>
-        </h5>
-        <p class="card-text placeholder-glow">
-          <span class="placeholder col-7"></span>
-          <span class="placeholder col-4"></span>
-          <span class="placeholder col-4"></span>
-          <span class="placeholder col-6"></span>
-          <span class="placeholder col-8"></span>
-        </p>
-        <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>
-      </div>
-    </div>
 
     <!-- 리뷰 카드 -->
-    <div v-else>
-      <div v-if="!review.is_private||paramUsername===username">
-        <div class="review-container" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
-          <div class="poster-container">
-            <img
-              class="review-poster"
-              v-if="review.thumbnail_path!=='image'"
-              :src="`https://image.tmdb.org/t/p/original/${review.thumbnail_path}`"
-              alt="profile img"
-            >
-            <div v-else class="default-poster"></div>
-          </div>
-          <div class="month-n-date-container">
-            <span class="review-month">{{ engMonth }}  </span>
-            <span class="review-date">{{ date }}</span>
-          </div>
-          <p class="review-year">{{ year }}</p>
-          <div class="content-container">
-            <p class="review-movie-title">{{ review.movie_title }}</p>
-            <p class="review-oneline">{{ review.oneline_review }}</p>
-          </div>
+    <div v-if="!review.is_private||paramUsername===username">
+      <div class="review-container" data-bs-toggle="modal" :data-bs-target="`#Modal${review.pk}`">
+        <div class="poster-container">
+          <img
+            class="review-poster"
+            v-if="review.thumbnail_path!=='image'"
+            :src="`https://image.tmdb.org/t/p/original/${review.thumbnail_path}`"
+            alt="profile img"
+          >
+          <div v-else class="default-poster"></div>
+        </div>
+        <div class="month-n-date-container">
+          <span class="review-month">{{ engMonth }}  </span>
+          <span class="review-date">{{ date }}</span>
+        </div>
+        <p class="review-year">{{ year }}</p>
+        <div class="content-container">
+          <p class="review-movie-title">{{ review.movie_title }}</p>
+          <p class="review-oneline">{{ review.oneline_review }}</p>
         </div>
       </div>
 
@@ -60,7 +42,6 @@ export default {
   data: function () {
     return {
       isSelected: false,
-      isLoading: true,
       year : new Date(this.review.watched_at).getFullYear(),
       month: new Date(this.review.watched_at).getMonth(),
       date: new Date(this.review.watched_at).getDate(),
@@ -82,11 +63,6 @@ export default {
       this.$emit('delete-review')
     }
   },
-  created: function(){
-    setTimeout(() => {
-      this.isLoading=false
-    }, 0)
-  },
   computed: {
     engMonth: function () {
       const encode = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -97,9 +73,6 @@ export default {
 </script>
 
 <style scoped>
-/* .review-container {
-  display: block;
-} */
 .review-container {
   position: relative;
   font-family: 'Noto Sans KR', sans-serif;
@@ -168,6 +141,7 @@ export default {
 }
 .review-container .content-container .review-movie-title {
   font-weight: bold;
+  width: 240px;
   margin-bottom: 8px;
 }
 .review-container .content-container .review-oneline {

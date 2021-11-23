@@ -1,7 +1,14 @@
 <template>
   <div class="container">
-    <img :src="`https://image.tmdb.org/t/p/original/${movieData.poster_path}`" style="width:200px; float:left;" alt="poster image">
-    <review-form @create-review="createReview"></review-form>
+    <h2 class="py-5 text-center">리뷰 작성</h2>
+    <div class="border rounded">
+      <div class="d-md-flex p-3">
+        <div class="d-flex justify-content-center">
+          <img :src="`https://image.tmdb.org/t/p/original/${movieData.poster_path}`" style="width: 300px;" alt="poster image">
+        </div>
+        <review-form @create-review="createReview"></review-form>
+      </div>
+    </div>
   </div>
 </template>
 

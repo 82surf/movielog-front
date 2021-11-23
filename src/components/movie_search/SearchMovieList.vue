@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Search Movie List</h1>
     <search-movie-list-item
       v-for="movie in movieData"
       :key="movie.id"
