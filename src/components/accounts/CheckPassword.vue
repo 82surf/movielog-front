@@ -13,7 +13,7 @@
             <p>회원정보를 안전하게 보호하기 위해 비밀번호를 한 번 더 입력해주세요.</p>
             <div class="form-floating">
               <input type="password" class="form-control" placeholder="pw" id="password-label" v-model="dataSet.password" @keyup.enter="checkPassword">
-              <label fro="password-label">PW</label>
+              <label fro="password-label">비밀번호를 입력해주세요.</label>
             </div>
             <p v-if="errMsgFlag && !isValid">비밀번호가 틀렸습니다.</p>
           </div>

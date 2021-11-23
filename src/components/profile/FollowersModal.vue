@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal fade" id="FollowerModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
-      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header justify-content-between">
             <h5 class="modal-title" id="FollowerModalLabel">Followers</h5>
@@ -29,11 +29,6 @@
 import FollowerModalItem from '@/components/profile/FollowerModalItem.vue'
 export default {
   name: 'FollowersModal',
-  data: function (){
-    return {
-      
-    }
-  },
   components: {
     FollowerModalItem,
   },

@@ -12,7 +12,25 @@
       </select>
     </div>
 
-    <div class="review-list mb-5">
+    <div v-if="isLoading" class="d-flex justify-content-center mt-5">
+      <div style="width: 2rem; height: 2rem;" class="spinner-grow text-primary me-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div style="width: 2rem; height: 2rem;" class="spinner-grow text-success me-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div style="width: 2rem; height: 2rem;" class="spinner-grow text-danger me-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div style="width: 2rem; height: 2rem;" class="spinner-grow text-warning me-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div style="width: 2rem; height: 2rem;" class="spinner-grow text-info" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div v-show="!isLoading" class="review-list mb-5">
       <review-list-item
         v-for="review of reviews"
         :key="review.pk"
@@ -77,9 +95,6 @@ export default {
           } else if(this.status==='rank_desc'){
             this.reviews = _.orderBy(res.data, ['rank'], ['desc'])
           }
-          setTimeout(() =>{
-            this.isLoading = false
-          }, 1)
         })
         .catch(err => {
           console.log(err)
@@ -88,6 +103,9 @@ export default {
   },
   created: function () {
     this.getReviews()
+    setTimeout(() =>{
+            this.isLoading = false
+          }, 1500)
   },
   watch: {
     paramUsername: function () {
