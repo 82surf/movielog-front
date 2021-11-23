@@ -5,17 +5,26 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="updateUserInfoModalLabel">회원 정보 수정</h5>
+            <h5 class="modal-title" id="updateUserInfoModalLabel">설정</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="$emit('clear-data-set')"></button>
           </div>
           <div class="modal-body">
+<<<<<<< HEAD
 
 
+=======
+            <h5>프로필 이미지 변경</h5>
+>>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
             <div class="input-group mb-3">
-              <span class="input-group-text" id="file-label">Profile Image</span>
+              <!-- <span class="input-group-text" id="file-label">Profile Image</span> -->
               <input type="file" class="form-control" aria-describedby="file-label" @change="onFileSelected">
             </div>
+<<<<<<< HEAD
 
+=======
+            <hr>
+            <h5>회원 정보 수정</h5>
+>>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
             <div>
               <p v-if="!isUniqueUsername && isInputUsernameChanged">아이디 중복 체크 필요</p>
               <p v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</p>
@@ -33,11 +42,13 @@
               <input type="text" class="form-control" id="name-label" placeholder="name@example.com" v-model="dataSet.name">
               <label for="name-label">Name</label>
             </div>
+            <hr>
+            <h5>프로필 공개 여부</h5>
             <div>
-              <p>프로필 공개 여부</p>
               <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="not-private-update-input" v-model="dataSet.isPrivate">
-                <label class="form-check-label" for="not-private-update-input">페이지 팔로워공개</label>
+                <label v-show="dataSet.isPrivate" class="form-check-label" for="not-private-update-input">프로필이 비공개 상태입니다.</label>
+                <label v-show="!dataSet.isPrivate" class="form-check-label" for="not-private-update-input">프로필이 공개 상태입니다.</label>
               </div>
             </div>
           </div>

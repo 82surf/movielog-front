@@ -2,7 +2,8 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid d-flex justify-content-between">
-        <router-link class="navbar-brand" :to="{ name: 'Landing'}">movielog</router-link>
+        <router-link v-if="isLogin" class="navbar-brand" :to="{ name: 'Profile', params: {username: username}}">movielog</router-link>
+        <router-link v-else class="navbar-brand" :to="{ name: 'Landing'}">movielog</router-link>
         <!-- 유저 검색창 -->
         <form class="d-none d-md-block d-flex mt-2 mt-lg-0 mx-auto" @submit.prevent v-if="username">
           <input v-model="inputUsername" @keyup.enter="searchUser" class="form-control me-2" type="search" placeholder="친구 검색하기" aria-label="Search">
@@ -24,11 +25,11 @@
         <ul v-else class="nav">
           <!-- 회원가입 -->
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModal">Sign up</a>
+            <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#signupModal">Sign up</a>
           </li>
           <!-- 로그인 -->
           <li class="nav-item">
-            <a id="loginBtn" class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+            <a class="nav-link login-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
           </li>
         </ul>
       </div>
@@ -64,6 +65,7 @@ export default {
       localStorage.removeItem('jwt')
       this.$store.dispatch('getUsername', '')
       this.$router.push({ name: 'Landing' })  // 메인페이지로 push
+      alert('로그아웃 되었습니다.')
     },
     searchUser: function () {
       this.$router.push({ name: 'UserSearchResult', params: { username: this.inputUsername }})
@@ -84,12 +86,12 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  background-color: #fafafa;
-}
+<style scoped>
 .navbar-brand {
   font-family: 'Reem Kufi', sans-serif;
   font-size: 1.2rem;
+}
+.login-btn {
+  cursor: pointer;
 }
 </style>

@@ -1,22 +1,22 @@
 <template>
-  <div class="d-flex">
-      <div style="float:none" data-bs-toggle="modal" :data-bs-target="`#detail-${movie.id}`">
-        <div v-if="movie.poster_path" style="float:left">
-          <img :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`" alt="" style="width:200px">
-        </div>
-        <div v-else style="width:200px; height:300px; float:left">
-          이미지가 없습니다.
-        </div>
-        <span>{{ movie.title }}</span>
-        <p>{{ movie.overview }}</p>
+  <div>
+    <div class="d-flex border rounded my-2 mx-5" data-bs-toggle="modal" :data-bs-target="`#detail-${movie.id}`">
+      <div>
+        <img v-if="movie.poster_path" :src="`https://image.tmdb.org/t/p/original/${movie.poster_path}`" alt="" style="width: 200px">
+        <div v-else style="width:200px; height:300px; background-color: gray;">포스터가 없습니다.</div>
       </div>
-      <search-movie-list-item-modal
-        :movie="movie"
-        :castList="castList"
-        :crewList="crewList"
-      >
-      </search-movie-list-item-modal>
-      <hr>
+      <div class="mt-3 mx-3">
+        <h3 class="mb-3">{{ movie.title }}</h3>
+        <p class="card-text mb-auto">{{ movie.overview }}</p>
+      </div>
+    </div>
+    <search-movie-list-item-modal
+      :movie="movie"
+      :castList="castList"
+      :crewList="crewList"
+    >
+    </search-movie-list-item-modal>
+    <hr>
   </div>
 </template>
 

@@ -2,12 +2,12 @@
   <div class="card card-body my-3">
     <div class="d-flex justify-content-between">
       <div>
-        <span class="comment-username me-2">{{ comment.user.username }}</span>
+        <span class="comment-username me-2" @click="goToProfile">{{ comment.user.username }}</span>
         <span class="comment-content">{{ comment.content }}</span>
       </div>
       <div class="btn-container">
-        <span @click="likeComment" v-show="!likes" class="material-icons like-btn like-btn__inactive me-2">favorite</span>
-        <span @click="likeComment" v-show="likes" class="material-icons like-btn like-btn__active me-2">favorite</span>
+        <i @click="likeComment" v-show="!likes" class="material-icons like-btn like-btn__inactive me-2">favorite</i>
+        <i @click="likeComment" v-show="likes" class="material-icons like-btn like-btn__active me-2">favorite</i>
         <span class="me-2">{{ comment.like_count }} Likes</span>
         <button v-if="username===comment.user.username" @click="deleteComment" class="text-end btn-close"></button>
       </div>
@@ -31,6 +31,9 @@ export default {
     }
   },
   methods: {
+    goToProfile: function () {
+      this.$emit('go-to-profile', this.comment.user.username)
+    },
     setToken: function () {
       const token = localStorage.getItem('jwt')
       const config = {

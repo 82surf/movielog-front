@@ -5,7 +5,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+            <h5 class="modal-title" id="exampleModalLabel">로그인</h5>
             <button id="login-close-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearInput"></button>
           </div>
           <div class="modal-body">
@@ -18,7 +18,7 @@
                   v-model="credentials.username"
                   placeholder="id"
                 >
-                <label for="username-login-label">ID</label>
+                <label for="username-login-label">아이디</label>
               </div>
             </div>
             <div>
@@ -30,12 +30,16 @@
                   v-model="credentials.password"
                   placeholder="pw"
                 >
-                <label for="password-login-input">PW</label>
+                <label for="password-login-input">비밀번호</label>
               </div>
             </div>
           </div>
           <div class="modal-footer">
+<<<<<<< HEAD
             <button type="button" class="btn btn-primary" @click="login">Login</button>
+=======
+            <button type="button" class="btn btn-primary" @click="checkValid">로그인</button>
+>>>>>>> 2589c5cbe7a2e2bdc59e34a0c5af009633ee9e91
           </div>
         </div>
       </div>
