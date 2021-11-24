@@ -30,6 +30,7 @@ export default {
   props: {
     following: Object,
     followerUser: Array,
+    myFollower: Array,
   },
   methods: {
     goToProfile: function () {
@@ -38,7 +39,7 @@ export default {
     }
   },
   created: function() {
-    if (this.followerUser.includes(this.following.username)){
+    if (this.myFollower.includes(this.following.username)){
       this.isF4F=true
     } else {
       this.isF4F=false

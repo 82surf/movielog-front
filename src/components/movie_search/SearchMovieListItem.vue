@@ -24,7 +24,6 @@
 import SearchMovieListItemModal from '@/components/movie_search/SearchMovieListItemModal.vue'
 import axios from 'axios'
 
-const API_KEY = '70b5f8cc0018e10bfcf6146a7aaf3dec'
 
 export default {
   name: 'SearchMovieListItem',
@@ -45,7 +44,7 @@ export default {
   methods: {
     getCredit: function () {
       const params = {
-        api_key: API_KEY,
+        api_key: process.env.VUE_APP_API_KEY,
         language: 'ko-KR',
         region:'KR'
       }

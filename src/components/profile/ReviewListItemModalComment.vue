@@ -93,6 +93,7 @@ export default {
 }
 .like-btn {
   font-size: 1rem;
+  cursor: pointer;
 }
 .like-btn__active {
   color: red;

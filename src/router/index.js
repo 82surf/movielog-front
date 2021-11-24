@@ -6,7 +6,6 @@ import ReviewCreate from '../views/profiles/ReviewCreate.vue'
 import UserSearchResult from '../views/profiles/UserSearchResult'
 import Landing from '../views/Landing.vue'
 import RecommendMovie from '../views/recommend/RecommendMovie.vue'
-import test from '../views/test.vue'
 
 Vue.use(VueRouter)
 
@@ -41,11 +40,6 @@ const routes = [
     name: 'RecommendMovie',
     component: RecommendMovie
   },
-  {
-    path: '/test',
-    name: 'test',
-    component: test,
-  }
 ]
 
 const router = new VueRouter({

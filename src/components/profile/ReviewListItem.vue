@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto" style="width: 300px; height: 428px">
+  <div class="review-item mx-auto" style="width: 300px; height: 428px">
 
     <!-- 리뷰 카드 -->
     <div v-if="!review.is_private||paramUsername===username">
@@ -31,6 +31,13 @@
         @delete-review="deleteReview"
       ></review-list-item-modal>
 
+    </div>
+    <div v-else>
+      <div class="private-review-container">
+        <div class="private-review-poster"></div>
+        <i class="private-review-ico material-icons">lock</i>
+        <div class="private-review-label">비공개 리뷰입니다.</div>
+      </div>
     </div>
   </div>
 </template>
@@ -66,13 +73,16 @@ export default {
   computed: {
     engMonth: function () {
       const encode = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      return encode[this.month + 1]
+      return encode[this.month]
     }
   }
 }
 </script>
 
 <style scoped>
+.review-item {
+  box-shadow: rgb(0 0 0 / 69%) 8px 8px 10px -10px;
+}
 .review-container {
   position: relative;
   font-family: 'Noto Sans KR', sans-serif;
@@ -165,5 +175,43 @@ export default {
   transition: opacity .5s ease-in-out;
   -moz-transition: opacity .5s ease-in-out;
   -webkit-transition: opacity .5s ease-in-out;
+}
+.private-review-container {
+  position: relative;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  transition: .5s;
+}
+.private-review-container .private-review-poster {
+  position: absolute;
+  width: 300px;
+  height: 428px;
+  background-color: gray;
+  filter: brightness(50%);
+  transition: .5s;
+}
+.private-review-container:hover .private-review-poster {
+  filter: brightness(100%);
+}
+.private-review-container .private-review-ico {
+  position: absolute;
+  font-size: 36px;
+  width: 36px;
+  left: 0;
+  right: 0;
+  top: 12rem;
+  margin: 0 auto;
+}
+.private-review-container .private-review-label {
+  position: absolute;
+  width: 127px;
+  font-size: 16px;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 15rem;
+  margin: 0 auto;
 }
 </style>

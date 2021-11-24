@@ -1,8 +1,9 @@
 <template>
   <div>
     <movie-list-by-random-item-modal 
-      :movie-data="movie"
+      :movie-data="movieData"
       :video-key="videoKey"
+      :movie="movie"
     ></movie-list-by-random-item-modal>
   </div>
 </template>
@@ -12,7 +13,6 @@ import axios from 'axios'
 import _ from 'lodash'
 import MovieListByRandomItemModal from '@/components/recommend_movie/MovieListByRandomItemModal.vue'
 
-const API_KEY = '70b5f8cc0018e10bfcf6146a7aaf3dec'
 export default {
   name: 'MovieListByRandomItem',
   components : {
@@ -37,7 +37,7 @@ export default {
           this.movieData = res.data
           axios({
             method: 'get',
-            url: `https://api.themoviedb.org/3/movie/${res.data.id}/videos?api_key=${API_KEY}&language=ko-KR`,
+            url: `https://api.themoviedb.org/3/movie/${res.data.id}/videos?api_key=${process.env.VUE_APP_API_KEY}&language=ko-KR`,
           })
             .then(response => {
               if (response.data.results.length < 1){
@@ -55,7 +55,6 @@ export default {
           console.log(err)
         })
     },
-    
   },
   created: function (){
     this.atCreated()

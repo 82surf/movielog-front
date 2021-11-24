@@ -51,6 +51,7 @@
     <followings-modal
       :followings="followings"
       :followerUser="followerUser"
+      :my-follower="myFollower"
     ></followings-modal>
     <check-password @get-user-info="getUserinfo"></check-password>
   </div>
@@ -82,6 +83,7 @@ export default {
       followings: null,
       followingUser: null,
       followerUser: null,
+      myFollower: null,
     }
   },
   components: {
@@ -114,6 +116,9 @@ export default {
             return user.username
           })
           this.followerUser = res.data.followings.map(user => {
+            return user.username
+          })
+          this.myFollower = res.data.my_follower.map(user => {
             return user.username
           })
           this.followingUser.push('a')

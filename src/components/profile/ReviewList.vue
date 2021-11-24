@@ -12,7 +12,7 @@
       </select>
     </div>
 
-    <div v-if="isLoading" class="d-flex justify-content-center mt-5">
+    <div v-if="isLoading" class="d-flex justify-content-center loading-spinner">
       <div style="width: 2rem; height: 2rem;" class="spinner-grow text-primary me-3" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
@@ -79,7 +79,6 @@ export default {
         headers: this.setToken()
       })
         .then(res => {
-          console.log(res)
           if (this.status==='created_at_desc'){
             this.reviews = _.orderBy(res.data, ['created_at'], ['desc'])
           } else if(this.status==='created_at_asc'){
@@ -138,6 +137,9 @@ export default {
 </script>
 
 <style scoped>
+.loading-spinner {
+  padding: 20vh 0;
+}
 .review-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -147,5 +149,17 @@ export default {
 .crete-review-btn {
   right: 0;
   bottom: 0;
+}
+.text-primary {
+  background-color: #5cb1ff;
+}
+.text-success {
+  background-color: #9df574;
+}
+.text-danger {
+  background-color: #ff5c5c;
+}
+.text-warning {
+  background-color: #ffdd65;
 }
 </style>

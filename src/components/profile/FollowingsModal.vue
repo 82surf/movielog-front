@@ -13,6 +13,7 @@
               :key="following.username"
               :following="following"
               :followerUser="followerUser"
+              :my-follower="myFollower"
               data-bs-dismiss="modal"
             >
             </following-modal-item>
@@ -35,6 +36,7 @@ export default {
   props: {
     followings: Array,
     followerUser: Array,
+    myFollower: Array,
   },
 
 }
