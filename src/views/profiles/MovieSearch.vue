@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <movie-search-form @input-change="inputChange"></movie-search-form>
-    <search-movie-list :movieData="searchMovieData"></search-movie-list>
-    
+    <search-movie-list :movieData="searchMovieData" :search-flag="searchFlag"></search-movie-list>
   </div>
 </template>
 
@@ -11,8 +10,7 @@ import axios from 'axios'
 import SearchMovieList from '@/components/movie_search/SearchMovieList.vue'
 import MovieSearchForm from '@/components/movie_search/MovieSearchForm.vue'
 
-const API_KEY = '70b5f8cc0018e10bfcf6146a7aaf3dec'
-const BASE_API_URL = `https://api.themoviedb.org/3/search/movie?language=ko-KR&api_key=${API_KEY}&include_adult=false`
+const BASE_API_URL = `https://api.themoviedb.org/3/search/movie?language=ko-KR&api_key=${process.env.VUE_APP_API_KEY}&include_adult=false`
 export default {
   name: 'ReviewForm',
   components: {
@@ -23,6 +21,7 @@ export default {
     return {
       keyword: null,
       searchMovieData: null,
+      searchFlag: false,
     }
   },
   methods: {
@@ -36,6 +35,7 @@ export default {
       })
         .then(res =>{
           this.searchMovieData = res.data.results
+          this.searchFlag = true
         })
         .catch(err => {
           console.log(err)

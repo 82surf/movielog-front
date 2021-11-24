@@ -29,6 +29,7 @@
                   id="password-login-input" 
                   v-model="credentials.password"
                   placeholder="pw"
+                  @keyup.enter="checkValid"
                 >
                 <label for="password-login-input">비밀번호</label>
               </div>

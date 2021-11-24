@@ -11,7 +11,7 @@
         <small>{{ user.followers_count }}명이 팔로우 하고 있습니다.</small>
       </div>
     </a>
-    <p v-else>검색결과가 없습니다.</p>
+    <p v-else class="text-center mt-3">검색결과가 없습니다.</p>
   </div>
 </template>
 

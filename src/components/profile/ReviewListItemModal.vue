@@ -59,7 +59,15 @@
               <hr class="my-4">
               <div class="input-group mb-3">
                 <span class="input-group-text" id="review-comment-input">댓글 작성</span>
-                <input type="text" v-model.trim="commentInput" @keyup.enter="createComment" class="form-control" placeholder="댓글을 작성해주세요." aria-label="Username" aria-describedby="review-comment-input">
+                <input 
+                  type="text" 
+                  v-model.trim="commentInput" 
+                  @keyup.enter="createComment" 
+                  class="form-control" 
+                  placeholder="댓글을 작성해주세요." 
+                  aria-label="Username" 
+                  aria-describedby="review-comment-input">
+                <button class="input-group-btn btn btn-outline-secondary">작성</button>
               </div>
               <review-list-item-modal-comment
                 v-for="comment in review.comment_set"
@@ -130,7 +138,7 @@
               <!-- 비공개 여부 설정 -->
               <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" :id="`not-private-update-input${review.pk}`" v-model="isPrivate">
-                <label class="form-check-label" :for="`not-private-update-input${review.pk}`">팔로워에게만 공개</label>
+                <label class="form-check-label" :for="`not-private-update-input${review.pk}`">리뷰 비공개</label>
               </div>
           </div>
           <div class="modal-footer"></div>
@@ -305,6 +313,7 @@ window.addEventListener('popstate', function () {
 }
 .like-btn {
   font-size: 1rem;
+  cursor: pointer;
 }
 .like-btn.like-btn__inactive {
   color: red;

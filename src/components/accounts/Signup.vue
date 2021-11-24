@@ -94,7 +94,6 @@ export default {
   },
   methods: {
     clearInput: function () {
-      console.log('clear signup input!')
       for (let key in this.credentials) {
         this.credentials[key] = null
       }
@@ -127,7 +126,6 @@ export default {
         return false
       }
       // 공백 포함 확인
-      console.log(this.inputUsername.search(/\s/))
       if (this.inputUsername.search(/\s/) != -1) {
         alert('아이디에는 공백이 포함될 수 없습니다.')
       }
