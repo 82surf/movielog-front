@@ -12,8 +12,10 @@
           <!-- 내 페이지: 회원정보수정 버튼 / 남 페이지: 팔로우 버튼 -->
           <div class="user-info-btn-group">
             <div v-if="username!==paramUsername">
-              <a class="btn btn-primary follow-btn" v-if="userInfo.isFollowing" @click="followToggle">Unfollow</a>
-              <a class="btn btn-primary follow-btn" v-else @click="followToggle">Follow</a>
+              <div v-if="!isPrivate">
+                <a class="btn btn-primary follow-btn" v-if="userInfo.isFollowing" @click="followToggle">Unfollow</a>
+                <a class="btn btn-primary follow-btn" v-else @click="followToggle">Follow</a>
+              </div>
             </div>
             <div v-else>
               <div class="settings-btn">
