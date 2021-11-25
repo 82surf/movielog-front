@@ -17,12 +17,14 @@
             <hr>
             <h5>회원 정보 수정</h5>
             <div>
-              <p v-if="!isUniqueUsername && isInputUsernameChanged">아이디 중복 체크 필요</p>
-              <p v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</p>
+              <div class="my-2">
+                <button v-show="isInputUsernameChanged" @click="usernameValid" class="btn btn-outline-warning btn-sm me-2">아이디 중복 확인</button>
+                <span v-if="!isUniqueUsername && isInputUsernameChanged" style="color: red">아이디 중복 체크 필요</span>
+                <span v-else-if="isInputUsernameChanged">아이디 중복 체크 완료</span>
+              </div>
               <div class="form-floating">
                   <input type="text" class="form-control" id="username-label" placeholder="name@example.com" v-model="inputUsername">
                   <label for="username-label">ID</label>
-                  <button v-show="isInputUsernameChanged" @click="usernameValid">아이디 중복 확인</button>
               </div>
             </div>
             <div class="form-floating">
