@@ -67,7 +67,7 @@
                   placeholder="댓글을 작성해주세요." 
                   aria-label="Username" 
                   aria-describedby="review-comment-input">
-                <button class="input-group-btn btn btn-outline-secondary">작성</button>
+                <button class="input-group-btn btn btn-outline-secondary" @click="createComment">작성</button>
               </div>
               <review-list-item-modal-comment
                 v-for="comment in review.comment_set"
